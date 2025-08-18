@@ -1,0 +1,37 @@
+---
+title: "RStudio"
+---
+
+## RStudio from bash
+
+I created a program that writes a Rstudio-Project file. Its unclear what of the process I should document where. Some are Linux / Ubuntu tips, points are installation diary items. I did this in a why that I want to (vibe-) code more tools later on.
+
+The program is installed here:
+
+```bash
+mkdir -p ~/bin/rproj_create
+nvim ~/bin/rproj_create/rproj_create # ← write program
+
+chmod +x ~/bin/rproj_create/rproj_create
+```
+
+Now, I added this to `zsh.rc`
+
+```
+# Add rproj_create to path
+export PATH="$HOME/bin/rproj_create:$PATH"
+```
+
+
+Now I can run:
+
+| Command                                           | Result                         |
+| ------------------------------------------------- | ------------------------------ |
+| `create_rproj_file`                               | creates `project.Rproj`        |
+| `create_rproj_file "Zürich Projekt"`              | creates `Zürich_Projekt.Rproj` |
+| `create_rproj_file "Zürich Projekt" zurich.Rproj` | creates `zurich.Rproj`         |
+| `create_rproj_file MyProject --NumSpacesForTab 4` | creates `MyProject.Rproj`      |
+
+
+The program is tracked here: https://github.com/ratnanil/rproj-create
+

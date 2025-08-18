@@ -1,0 +1,3 @@
+# Preface {.unnumbered}
+
+A place to store R tips and tricks. Migrated from Joplin

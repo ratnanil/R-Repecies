@@ -1,0 +1,135 @@
+---
+title: "Base-R"
+---
+
+### Issues with special characters ins windows user names
+
+I phrased the issue [here](https://community.rstudio.com/t/rstudio-issues-with-special-characters-in-windows-user-name/148334)
+>
+> ..we have at least one or two students with special characters in their windows username. This leads to the situation as described [here](https://community.rstudio.com/t/hello-there-im-having-a-error-message-that-i-cant-understand/137805/4?u=rata).
+> 
+> The errors are always a bit different. The latest student has this error message showing up in the RStudio GUI:
+>
+> ```
+> Error in nchar(homeDir): invalid multibyte string, element 1
+> ```
+> The RStudio console has several warning messages:
+>
+> ```
+> Warning message:
+> In normalizePath(path.expand(path), winslash, mustWork) : path[1]="C:/Users/N�me/Documents
+> ```
+>
+> While the username in this case would be `Nöme`. 
+
+My guess is that the error comes when R tries to search for an `.RProfile` or `.Renviron` file in `C:/Users/Nöme/Documents`, but fails because of the special character. My hope is that we can prevent R to search in this path by manually setting a path to look for the said files.  A quick refresher on R's startup behaviour (from [here](https://csgillespie.github.io/efficientR/set-up.html)):
+
+Two files are read each time R starts (unless one of the command line options outlined above is used):
+
+1. `.Renviron`, the primary purpose of which is to set environment variables. These tell R where to find external programs and can hold user-specific information than needs to be kept secret, typically API keys.
+2. `.Rprofile` is a plain text file (which is always called .Rprofile, hence its name) that simply runs lines of R code every time R starts. If you want R to check for package updates each time it starts (as explained in the previous section), you simply add the relevant line somewhere in this file.
+
+A list of related files from [here](https://support.rstudio.com/hc/en-us/articles/360047157094-Managing-R-with-Rprofile-Renviron-Rprofile-site-Renviron-site-rsession-conf-and-repos-conf)
+
+| File          | Who Controls  | Level           | Limitations                                    |
+|---------------|---------------|-----------------|------------------------------------------------|
+| .Rprofile     | User or Admin | User or Project | None, sourced as R code.                       |
+| .Renviron     | User or Admin | User or Project | Set environment variables only.                |
+| Rprofile.site | Admin         | Version of R    | None, sourced as R code.                       |
+| Renviron.site | Admin         | Version of R    | Set environment variables only.                |
+| rsession.conf | Admin         | Server          | Only RStudio settings, only single repository. |
+| repos.conf    | Admin         | Server          | Only for setting repositories.                 |
+
+
+The following locations are searched for these files (again, from [here](https://csgillespie.github.io/efficientR/set-up.html)):
+
+- `R_HOME`, the directory in which R is installed. The etc sub-directory can contain start-up files read early on in the start-up process. Find out where your `R_HOME` is with the `R.home()` command.
+- `HOME`, the user’s home directory. Typically this is /home/username on Unix machines or `C:\Users\username` on Windows (since Windows 7). Ask R where your home directory is with, `Sys.getenv("HOME")`.
+- R’s current working directory (CWD). This is reported by `getwd()`.
+
+Only one `.Rprofile` and one `.Renviron` files are used per session. The files in the CWD override the files in `HOME` which override the files in `R_HOME`. `HOME` is the problematic path in our case, but how is it set? [This SO Answer](https://stackoverflow.com/a/53671435/4139249) provides some insights:
+
+> The home directory is set as follows: If environment variable R_USER is set, its value is used. Otherwise if environment variable HOME is set, its value is used. After those two user-controllable settings, R tries to find system-defined home directories. It first tries to use the Windows "personal" directory (typically C:\Users\username\Documents)...
+
+We solved it by creating a new Folder without speical characters `C:\Users\safe-username` and giving this folder write permission to all users. We also created a subfolder in "`safe-username`" named "`R_libraries`". Then we created a two new Environmental Variables on System level as follows:
+
+1. `R_USER`: `C:\Users\safe-username`
+2. `R_LIBS_USER`: `C:\Users\safe-username\R_libraries`
+
+Now, R searches for `.Renviron` and `.Rprofile` in `C:\Users\safe-username` and installs R Libraries in `C:\Users\safe-username\R_libraries`. In this way, the special character issue is resolved. I'm not sure if this is the best method, but it works!
+
+### Segmenting a vector based on a series of TRUE / FALSE values
+
+Often when dealing with movement trajectories, I need to build segments depending whether a condition (e.g. time difference between the samples) is true or false. The following fuction is well equipped for this:
+
+```r
+rle_id <- function(vec){
+  x <- rle(vec)$lengths
+  as.factor(rep(seq_along(x), times=x))
+  }
+```
+
+### Conntect to a (Postgres) Database
+
+```
+library(DBI)
+con <- dbConnect(RPostgres::Postgres(),
+                 dbname = "mydb",
+                 host = "myhost",
+                 port = 5432,
+                 user = "myuser",
+                 password = "mypassword")
+```
+
+
+### Remove sepecial characters
+
+
+https://stackoverflow.com/a/20495866
+
+```
+> iconv("äöüèéàüöä", to="ASCII//TRANSLIT")
+[1] "aoueeauoa"
+```
+
+https://github.com/tidyverse/stringr/issues/149#issuecomment-289151373
+
+
+```
+x <- c("soñar", "camión", "égoïste")
+stringi::stri_trans_general(x, "Latin-ASCII")
+#> [1] "sonar"   "camion"  "egoiste"
+```
+
+
+### Readr: invalid multibyte string / encoding issue
+
+Even if the file is downloaded explicitly as UTF-8 from teams, the characters dont seem to be converted correctly. I get the following issue when trying to import it using readr.
+
+```
+Error in nchar(x, "width") : invalid multibyte string, element 1
+```
+
+This solved it:
+
+```
+read_delim("file.csv", ";", locale = locale(encoding="latin1"))
+```
+
+
+### Rowwise functions
+
+Dplyr allows you to do elementwise calculations using `rowwise`. But this can be very slow, since it groups the whole dataframe by row. I created a little helper function that does rowwise calculations:
+
+    element_wise <- function(..., fun = mean) {
+      do.call(cbind, list(...)) |> apply(1, fun)
+    }
+
+    # e.g. (a nonsensical example)
+
+    mtcars |> 
+      transmute(x = element_wise(gear, carb, fun = max))
+
+    
+
+

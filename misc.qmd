@@ -1,0 +1,23 @@
+---
+title: "Misc"
+---
+
+## Misc
+
+
+Translate Markdown files with [babledown](https://docs.ropensci.org/babeldown/).
+
+
+``` 
+Sys.setenv(DEEPL_API_KEY = keyring::key_get("deepl"))
+
+# install.packages('babeldown', repos = c('https://ropensci.r-universe.dev', 'https://cloud.r-project.org'))
+
+library(babeldown)
+babeldown::deepl_translate(
+  path = "input.qmd",
+  out_path = "output.qmd",
+  source_lang = "DE",
+  target_lang = "EN-GB",
+)
+```

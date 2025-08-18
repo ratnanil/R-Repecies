@@ -1,0 +1,71 @@
+---
+title: "Ggplot"
+---
+
+## ggplot2
+
+### Limit plot to bounding box
+
+`coord_sf()` in `ggplot2` does not seem to accept a geometry to limit the axes. You have to do it manually, like so:
+
+```r
+library(rnaturalearth)
+
+southamerica <- ne_countries(returnclass="sf", continent = "South America")
+
+bb <- st_bbox(southamerica[southamerica$admin == "Brazil",])
+
+ggplot(southamerica) +
+ geom_sf() +
+ coord_sf(xlim = c(bb["xmin"], bb["xmax"]),ylim = c(bb["ymin"], bb["ymax"]))
+```
+
+### Add number of observations to boxplot
+
+```r
+ggplot(mtcars, aes(as.character(cyl), disp)) +
+  geom_boxplot() +
+  stat_summary(geom = "label", fun.data = \(x)c(y = median(x), label = length(x)))
+```
+
+![image](https://user-images.githubusercontent.com/12532091/190623010-83fd9884-18b7-4c53-8c98-581f2c6ebde3.png)
+
+
+### Customize labelling in `facet_wrap`/`facet_grid`
+
+To customize the labelling on the "strips" in `facet_wrap`/`facet_grid`, proceed as follows. Note how the name of the column (`mycol`) is an argument of the `labeller()` function, while the input to that argument is a (anonymus) function which takes a string as an input and returns a string. The returned string is used as the label.
+
+```r
+facet_wrap(~mycol, labeller = labeller(mycol = \(x) paste("Gruppe",x)),nrow = nrows)
+
+
+```
+
+### Transparent background
+
+Add the following theme element to the plot ([source](https://www.statology.org/ggplot-transparent-background/)):
+
+```r
+theme(
+  panel.background = element_rect(fill="transparent"),
+  plot.background = element_rect(fill="transparent", color=NA)
+  )
+```
+
+### Annotating outside plot area:
+
+```r
+library(ggplot2)
+library(cowplot)
+
+p <- ggplot(mtcars, aes(disp, mpg)) + geom_point() +
+  facet_wrap(~cyl)
+
+ggdraw() +
+  draw_plot(p,.5, .5, .75, .75,hjust = .5, vjust = .5) +
+  draw_line(x = c(.1, .5), y = c(.9, .5), arrow = grid::arrow(type = "closed")) +
+  draw_label("What a special subset",x = 0.05, y = .95,hjust = 0)
+
+```
+
+![image](https://github.com/ratnanil/IT_diary/assets/12532091/fa90d9b2-35a6-4d71-b403-7dfd8942dfd1)

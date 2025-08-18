@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; R Spatial – R-Tricks</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ggplot.html" rel="next">
+<link href="./base-R.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-46eeb4c476de49ef7df495821a6125d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-d9c77dfe7a0221f9a51a4f8aebee4486.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./r-spatial.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R Spatial</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R-Tricks</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./base-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Base-R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-spatial.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R Spatial</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ggplot</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">RStudio</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#default-startup-options" id="toc-default-startup-options" class="nav-link active" data-scroll-target="#default-startup-options"><span class="header-section-number">2.0.1</span> Default startup options</a></li>
+  <li><a href="#set-relation_to_geometry-attribute-of-an-sf-object" id="toc-set-relation_to_geometry-attribute-of-an-sf-object" class="nav-link" data-scroll-target="#set-relation_to_geometry-attribute-of-an-sf-object"><span class="header-section-number">2.1</span> Set relation_to_geometry attribute of an sf object</a>
+  <ul class="collapse">
+  <li><a href="#misc" id="toc-misc" class="nav-link" data-scroll-target="#misc"><span class="header-section-number">2.1.1</span> Misc</a></li>
+  <li><a href="#get-the-negative-of-a-polygon" id="toc-get-the-negative-of-a-polygon" class="nav-link" data-scroll-target="#get-the-negative-of-a-polygon"><span class="header-section-number">2.1.2</span> Get the “negative” of a polygon</a></li>
+  <li><a href="#bounding-box-to-polygon" id="toc-bounding-box-to-polygon" class="nav-link" data-scroll-target="#bounding-box-to-polygon"><span class="header-section-number">2.1.3</span> Bounding box to polygon</a></li>
+  <li><a href="#case-3-expanding-the-bounding-box" id="toc-case-3-expanding-the-bounding-box" class="nav-link" data-scroll-target="#case-3-expanding-the-bounding-box"><span class="header-section-number">2.1.4</span> Case 3 (Expanding the bounding box)</a></li>
+  <li><a href="#sfs-example-datasets" id="toc-sfs-example-datasets" class="nav-link" data-scroll-target="#sfs-example-datasets"><span class="header-section-number">2.1.5</span> sf’s example datasets</a></li>
+  <li><a href="#country-borders" id="toc-country-borders" class="nav-link" data-scroll-target="#country-borders"><span class="header-section-number">2.1.6</span> Country Borders</a></li>
+  <li><a href="#erase" id="toc-erase" class="nav-link" data-scroll-target="#erase"><span class="header-section-number">2.1.7</span> Erase</a></li>
+  <li><a href="#cast-point-to-linestring" id="toc-cast-point-to-linestring" class="nav-link" data-scroll-target="#cast-point-to-linestring"><span class="header-section-number">2.1.8</span> Cast POINT to LINESTRING</a></li>
+  <li><a href="#creating-simple-feature-geometries" id="toc-creating-simple-feature-geometries" class="nav-link" data-scroll-target="#creating-simple-feature-geometries"><span class="header-section-number">2.1.9</span> Creating Simple Feature Geometries</a></li>
+  <li><a href="#working-with-a-list-of-layers" id="toc-working-with-a-list-of-layers" class="nav-link" data-scroll-target="#working-with-a-list-of-layers"><span class="header-section-number">2.1.10</span> Working with a list of layers</a></li>
+  <li><a href="#tmap-v4" id="toc-tmap-v4" class="nav-link" data-scroll-target="#tmap-v4"><span class="header-section-number">2.1.11</span> Tmap V4</a></li>
+  <li><a href="#download-swissalti3d-tiles-with-custom-extent" id="toc-download-swissalti3d-tiles-with-custom-extent" class="nav-link" data-scroll-target="#download-swissalti3d-tiles-with-custom-extent"><span class="header-section-number">2.1.12</span> Download swissAlti3D tiles with custom extent</a></li>
+  <li><a href="#map-matching" id="toc-map-matching" class="nav-link" data-scroll-target="#map-matching"><span class="header-section-number">2.1.13</span> Map Matching</a></li>
+  <li><a href="#data.frame-method-for-sf_layers-object" id="toc-data.frame-method-for-sf_layers-object" class="nav-link" data-scroll-target="#data.frame-method-for-sf_layers-object"><span class="header-section-number">2.1.14</span> <code>data.frame</code> method for <code>sf_layers</code>-object</a></li>
+  </ul></li>
+  <li><a href="#terra" id="toc-terra" class="nav-link" data-scroll-target="#terra"><span class="header-section-number">2.2</span> terra</a>
+  <ul class="collapse">
+  <li><a href="#datatypes" id="toc-datatypes" class="nav-link" data-scroll-target="#datatypes"><span class="header-section-number">2.2.1</span> Datatypes</a></li>
+  <li><a href="#rasterize-a-vector-dataset" id="toc-rasterize-a-vector-dataset" class="nav-link" data-scroll-target="#rasterize-a-vector-dataset"><span class="header-section-number">2.2.2</span> Rasterize a vector dataset</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R Spatial</span></h1>
+<p class="subtitle lead">(sf, terra, tmap)</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="default-startup-options" class="level3" data-number="2.0.1">
+<h3 data-number="2.0.1" class="anchored" data-anchor-id="default-startup-options"><span class="header-section-number">2.0.1</span> Default startup options</h3>
+<p>These options could be included in rprofile or the like:</p>
+<pre><code>options(sf_max.plot = 1)   # only plots the first column of sf objects
+    if(require(tmap))tmap_options(basemaps = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png") # only uses openstreetmap for the default basemap</code></pre>
+</section>
+<section id="set-relation_to_geometry-attribute-of-an-sf-object" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="set-relation_to_geometry-attribute-of-an-sf-object"><span class="header-section-number">2.1</span> Set relation_to_geometry attribute of an sf object</h2>
+<pre><code>attribute variables are assumed to be spatially constant throughout all geometries</code></pre>
+<p>like so:</p>
+<pre><code>st_agr(x) = "constant"
+st_agr(y) = "constant"</code></pre>
+<section id="misc" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="misc"><span class="header-section-number">2.1.1</span> Misc</h3>
+<ul>
+<li>get linked software versions: <code>sf::sf_extSoftVersion()</code></li>
+</ul>
+</section>
+<section id="get-the-negative-of-a-polygon" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="get-the-negative-of-a-polygon"><span class="header-section-number">2.1.2</span> Get the “negative” of a polygon</h3>
+<p>I usually want this for visualisation purposes</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>st_negative <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">dist =</span> <span class="dv">0</span>){</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_buffer</span>(x, <span class="at">dist =</span> dist) <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_bbox</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sfc</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_difference</span>(x) </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.12.2, GDAL 3.11.3, PROJ 9.4.1; sf_use_s2() is TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>nc <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"shape/nc.shp"</span>,<span class="at">package=</span><span class="st">"sf"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_union</span>()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>nc <span class="sc">|&gt;</span> <span class="fu">st_geometry</span>() <span class="sc">|&gt;</span>  <span class="fu">plot</span>(<span class="at">col =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="r-spatial_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_negative</span>(nc, <span class="dv">0</span>) <span class="sc">|&gt;</span> <span class="fu">st_geometry</span>() <span class="sc">|&gt;</span>  <span class="fu">plot</span>(<span class="at">col =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="r-spatial_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="bounding-box-to-polygon" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="bounding-box-to-polygon"><span class="header-section-number">2.1.3</span> Bounding box to polygon</h3>
+<section id="case-1" class="level4" data-number="2.1.3.1">
+<h4 data-number="2.1.3.1" class="anchored" data-anchor-id="case-1"><span class="header-section-number">2.1.3.1</span> Case 1</h4>
+<p>Assuming you have a bounding box as four numeric values, xmin, ymin, xmax, ymax.</p>
+<p>The following function will turn this into a polygon:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>llur2poly <span class="ot">&lt;-</span> <span class="cf">function</span>(xmin, ymin, xmax, ymax){</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sapply</span>(\(x)<span class="fu">c</span>(xmin, ymin, xmax, ymax)[x]) <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">matrix</span>(<span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_polygon</span>()</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>or so:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>llur2poly <span class="ot">&lt;-</span> \(xmin,ymin,xmax,ymax, <span class="at">crs =</span> <span class="dv">2056</span>){</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">browser</span>()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_bbox</span>(<span class="fu">c</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">xmin =</span> xmin,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">xmax =</span> xmax,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">ymin =</span> ymin,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">ymax =</span> ymax</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sfc</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_set_crs</span>(crs)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="case-2" class="level4" data-number="2.1.3.2">
+<h4 data-number="2.1.3.2" class="anchored" data-anchor-id="case-2"><span class="header-section-number">2.1.3.2</span> Case 2</h4>
+<p>assuming you have an object named <code>towns</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_as_sfc</span>(<span class="fu">st_bbox</span>(towns))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="terra-ext-to-sf-polygon" class="level4" data-number="2.1.3.3">
+<h4 data-number="2.1.3.3" class="anchored" data-anchor-id="terra-ext-to-sf-polygon"><span class="header-section-number">2.1.3.3</span> Terra ext to sf Polygon</h4>
+<pre><code>ext(rastobj) |&gt; vect() |&gt; as("Spatial") |&gt; st_as_sfc()</code></pre>
+</section>
+</section>
+<section id="case-3-expanding-the-bounding-box" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="case-3-expanding-the-bounding-box"><span class="header-section-number">2.1.4</span> Case 3 (Expanding the bounding box)</h3>
+<p>See <a href="https://github.com/r-spatial/sf/issues/572#issuecomment-1401653103">my comment on this topic</a>:</p>
+<pre><code>nc &lt;- read_sf(system.file("shape/nc.shp",package="sf")) 
+
+b &lt;- st_as_sfc(st_bbox(nc))
+centroid = st_centroid(b)
+b3 &lt;- (b - centroid) * 1.1 + centroid
+rbind(b,b3) |&gt; st_sfc() |&gt; plot()</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/12532091/214261960-9a5ab427-c031-4bb3-9d60-eb54a7db671b.png" class="img-fluid figure-img"></p>
+<figcaption>image</figcaption>
+</figure>
+</div>
+</section>
+<section id="sfs-example-datasets" class="level3" data-number="2.1.5">
+<h3 data-number="2.1.5" class="anchored" data-anchor-id="sfs-example-datasets"><span class="header-section-number">2.1.5</span> sf’s example datasets</h3>
+<p>I’m always wondering what spatial vector example data is provided by the <code>sf</code> package. This is how you find out:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>sfs_sys_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="at">package=</span><span class="st">"sf"</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">file =</span> <span class="fu">list.files</span>(sfs_sys_path,<span class="st">"shp$|sqlite$|gpkg$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>files <span class="sc">|&gt;</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract</span>(file, <span class="st">"extension"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.(.+)$"</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">layers =</span> <span class="fu">map</span>(file, \(x) (<span class="fu">st_layers</span>(<span class="fu">file.path</span>(sfs_sys_path, x)))),</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co"># this no longer works... fix this at some point!</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># (it would be nice if sf's print method for st_layers were available as a df</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="co"># currently, the crs column is problematic)</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>files<span class="sc">$</span>crs <span class="ot">&lt;-</span> <span class="fu">map_chr</span>(files<span class="sc">$</span>crs, \(x)x[[<span class="dv">1</span>]]<span class="sc">$</span>input)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(files)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 7%">
+<col style="width: 14%">
+<col style="width: 15%">
+<col style="width: 11%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">file</th>
+<th style="text-align: left;">extension</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">geometry_type</th>
+<th style="text-align: left;">driver</th>
+<th style="text-align: right;">features</th>
+<th style="text-align: right;">fields</th>
+<th style="text-align: left;">crs_name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">gpkg/b_pump.gpkg</td>
+<td style="text-align: left;">gpkg</td>
+<td style="text-align: left;">b_pump</td>
+<td style="text-align: left;">Point</td>
+<td style="text-align: left;">GPKG</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Transverse_Mercator</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gpkg/buildings.gpkg</td>
+<td style="text-align: left;">gpkg</td>
+<td style="text-align: left;">buildings</td>
+<td style="text-align: left;">Polygon</td>
+<td style="text-align: left;">GPKG</td>
+<td style="text-align: right;">158</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Transverse_Mercator</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">gpkg/nc.gpkg</td>
+<td style="text-align: left;">gpkg</td>
+<td style="text-align: left;">nc.gpkg</td>
+<td style="text-align: left;">Multi Polygon</td>
+<td style="text-align: left;">GPKG</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: left;">NAD27</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gpkg/nospatial.gpkg</td>
+<td style="text-align: left;">gpkg</td>
+<td style="text-align: left;">nospatial</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: left;">GPKG</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">gpkg/tl.gpkg</td>
+<td style="text-align: left;">gpkg</td>
+<td style="text-align: left;">tl_2016_us_state</td>
+<td style="text-align: left;">Polygon</td>
+<td style="text-align: left;">GPKG</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">NAD83</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">shape/nc.shp</td>
+<td style="text-align: left;">shp</td>
+<td style="text-align: left;">nc</td>
+<td style="text-align: left;">Polygon</td>
+<td style="text-align: left;">ESRI Shapefile</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: left;">NAD27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">shape/olinda1.shp</td>
+<td style="text-align: left;">shp</td>
+<td style="text-align: left;">olinda1</td>
+<td style="text-align: left;">Polygon</td>
+<td style="text-align: left;">ESRI Shapefile</td>
+<td style="text-align: right;">470</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">GRS 1980(IUGG, 1980)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">shape/storms_xyz_feature.shp</td>
+<td style="text-align: left;">shp</td>
+<td style="text-align: left;">storms_xyz_feature</td>
+<td style="text-align: left;">3D Line String</td>
+<td style="text-align: left;">ESRI Shapefile</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">shape/storms_xyz.shp</td>
+<td style="text-align: left;">shp</td>
+<td style="text-align: left;">storms_xyz</td>
+<td style="text-align: left;">3D Line String</td>
+<td style="text-align: left;">ESRI Shapefile</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">shape/storms_xyzm_feature.shp</td>
+<td style="text-align: left;">shp</td>
+<td style="text-align: left;">storms_xyzm_feature</td>
+<td style="text-align: left;">Measured Line String</td>
+<td style="text-align: left;">ESRI Shapefile</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">shape/storms_xyzm.shp</td>
+<td style="text-align: left;">shp</td>
+<td style="text-align: left;">storms_xyzm</td>
+<td style="text-align: left;">Measured Line String</td>
+<td style="text-align: left;">ESRI Shapefile</td>
+<td style="text-align: right;">71</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sqlite/b.sqlite</td>
+<td style="text-align: left;">sqlite</td>
+<td style="text-align: left;">a.sqlite</td>
+<td style="text-align: left;">Point</td>
+<td style="text-align: left;">SQLite</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sqlite/meuse.sqlite</td>
+<td style="text-align: left;">sqlite</td>
+<td style="text-align: left;">meuse.sqlite</td>
+<td style="text-align: left;">Point</td>
+<td style="text-align: left;">SQLite</td>
+<td style="text-align: right;">155</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Amersfoort / RD New</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sqlite/nc.sqlite</td>
+<td style="text-align: left;">sqlite</td>
+<td style="text-align: left;">nc.sqlite</td>
+<td style="text-align: left;">Multi Polygon</td>
+<td style="text-align: left;">SQLite</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: left;">NAD27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sqlite/test3.sqlite</td>
+<td style="text-align: left;">sqlite</td>
+<td style="text-align: left;">Towns</td>
+<td style="text-align: left;">Point</td>
+<td style="text-align: left;">SQLite</td>
+<td style="text-align: right;">8101</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">WGS 84 / UTM zone 32N</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sqlite/test3.sqlite</td>
+<td style="text-align: left;">sqlite</td>
+<td style="text-align: left;">HighWays</td>
+<td style="text-align: left;">Point</td>
+<td style="text-align: left;">SQLite</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">WGS 84 / UTM zone 32N</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sqlite/test3.sqlite</td>
+<td style="text-align: left;">sqlite</td>
+<td style="text-align: left;">Regions</td>
+<td style="text-align: left;">Point</td>
+<td style="text-align: left;">SQLite</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">WGS 84 / UTM zone 32N</td>
+</tr>
+</tbody>
+</table>
+<p>To import a file</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"sqlite/test3.sqlite"</span>,<span class="at">package=</span><span class="st">"sf"</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in CPL_read_ogr(dsn, layer, query, as.character(options), quiet, :
+automatically selected the first layer in a data source containing more than
+one.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 8101 features and 5 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 319224 ymin: 3934674 xmax: 1308585 ymax: 5214373
+Projected CRS: WGS 84 / UTM zone 32N
+# A tibble: 8,101 × 6
+   Name               Peoples LocalCounc County Region           Geometry
+   &lt;chr&gt;                &lt;int&gt;      &lt;int&gt;  &lt;int&gt;  &lt;int&gt;        &lt;POINT [m]&gt;
+ 1 Brozolo                435          1      0      0 (427002.8 4996361)
+ 2 Campiglione-Fenile    1284          1      0      0 (367470.5 4962414)
+ 3 Canischio              274          1      0      0 (390084.1 5025552)
+ 4 Cavagnolo             2281          1      0      0   (425247 5000248)
+ 5 Magliano Alfieri      1674          1      0      0 (426418.9 4957737)
+ 6 Mango                 1334          1      0      0 (432661.5 4948470)
+ 7 Manta                 3363          1      0      0 (379960.2 4941389)
+ 8 Marene                2703          1      0      0   (399494 4946145)
+ 9 Margarita             1297          1      0      0 (395282.6 4917524)
+10 Martiniana Po          667          1      0      0 (370131.2 4942846)
+# ℹ 8,091 more rows</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"sqlite/test3.sqlite"</span>,<span class="at">package=</span><span class="st">"sf"</span>), <span class="st">"Towns"</span>) <span class="co"># more specific</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 8101 features and 5 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 319224 ymin: 3934674 xmax: 1308585 ymax: 5214373
+Projected CRS: WGS 84 / UTM zone 32N
+# A tibble: 8,101 × 6
+   Name               Peoples LocalCounc County Region           Geometry
+   &lt;chr&gt;                &lt;int&gt;      &lt;int&gt;  &lt;int&gt;  &lt;int&gt;        &lt;POINT [m]&gt;
+ 1 Brozolo                435          1      0      0 (427002.8 4996361)
+ 2 Campiglione-Fenile    1284          1      0      0 (367470.5 4962414)
+ 3 Canischio              274          1      0      0 (390084.1 5025552)
+ 4 Cavagnolo             2281          1      0      0   (425247 5000248)
+ 5 Magliano Alfieri      1674          1      0      0 (426418.9 4957737)
+ 6 Mango                 1334          1      0      0 (432661.5 4948470)
+ 7 Manta                 3363          1      0      0 (379960.2 4941389)
+ 8 Marene                2703          1      0      0   (399494 4946145)
+ 9 Margarita             1297          1      0      0 (395282.6 4917524)
+10 Martiniana Po          667          1      0      0 (370131.2 4942846)
+# ℹ 8,091 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="country-borders" class="level3" data-number="2.1.6">
+<h3 data-number="2.1.6" class="anchored" data-anchor-id="country-borders"><span class="header-section-number">2.1.6</span> Country Borders</h3>
+<p>RNaturalEarth has many worldwide datasets to use:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>southamerica <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">returnclass=</span><span class="st">"sf"</span>, <span class="at">continent =</span> <span class="st">"South America"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(southamerica[<span class="st">"admin"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="r-spatial_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/12532091/198558013-ddd8a4e5-adec-43f0-8cd4-72710391fb58.png" class="img-fluid figure-img"></p>
+<figcaption>image</figcaption>
+</figure>
+</div>
+</section>
+<section id="erase" class="level3" data-number="2.1.7">
+<h3 data-number="2.1.7" class="anchored" data-anchor-id="erase"><span class="header-section-number">2.1.7</span> Erase</h3>
+<p>https://github.com/r-spatial/sf/issues/346#issuecomment-302046063</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>st_erase <span class="ot">=</span> <span class="cf">function</span>(x, y) <span class="fu">st_difference</span>(x, <span class="fu">st_union</span>(<span class="fu">st_combine</span>(y)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="cast-point-to-linestring" class="level3" data-number="2.1.8">
+<h3 data-number="2.1.8" class="anchored" data-anchor-id="cast-point-to-linestring"><span class="header-section-number">2.1.8</span> Cast POINT to LINESTRING</h3>
+<p>When casting points to linestring with <code>group_by() |&gt; summarise() |&gt; st_cast("LINESTRING")</code> I need to pass the option <code>do_union = FALSE</code> to <code>summarise()</code>, otherwise the order of the points is not preserved (see <a href="https://github.com/r-spatial/sf/issues/692">my GitHub issue</a> on this).</p>
+</section>
+<section id="creating-simple-feature-geometries" class="level3" data-number="2.1.9">
+<h3 data-number="2.1.9" class="anchored" data-anchor-id="creating-simple-feature-geometries"><span class="header-section-number">2.1.9</span> Creating Simple Feature Geometries</h3>
+<section id="from-simple-vectors" class="level4" data-number="2.1.9.1">
+<h4 data-number="2.1.9.1" class="anchored" data-anchor-id="from-simple-vectors"><span class="header-section-number">2.1.9.1</span> From simple vectors</h4>
+<p>From time to time, I need to create simple feature geometries out of thin air. Each type of simple feature requires a specific data type. They could be inferred (since they make a lot of sense) but I’m lazy, hence the documentation here:</p>
+<p>Todo:</p>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="">visualize the results (quarto to github-markdown)</label></li>
+<li><label><input type="checkbox">make more complex examples (multiple points, multiple multipoints etc)</label></li>
+<li><label><input type="checkbox">add multipolygon example</label></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_point</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POINT (0 0)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_multipoint</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>MULTIPOINT ((0 0), (1 1))</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_linestring</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>LINESTRING (0 0, 1 1)</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_multilinestring</span>(</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>MULTILINESTRING ((0 0, 1 1), (0 1, 1 0))</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_polygon</span>(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>            <span class="co"># OGC Simple feature: exterior ring is counter clockwise</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>                <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>                <span class="dv">1</span>, <span class="dv">1</span>,</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">1</span>,</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_polygon</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>                <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>                <span class="dv">1</span>, <span class="dv">1</span>,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">1</span>,</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># OGC Simple feature: interior ring is clockwise</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.25</span>,<span class="fl">0.25</span>,</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.25</span>,<span class="fl">0.75</span>,</span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.75</span>,<span class="fl">0.75</span>,</span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.75</span>,<span class="fl">0.25</span>,</span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.25</span>,<span class="fl">0.25</span></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0), (0.25 0.25, 0.25 0.75, 0.75 0.75, 0.75 0.25, 0.25 0.25))</code></pre>
+</div>
+</div>
+</section>
+<section id="from-data.frame-columns" class="level4" data-number="2.1.9.2">
+<h4 data-number="2.1.9.2" class="anchored" data-anchor-id="from-data.frame-columns"><span class="header-section-number">2.1.9.2</span> from <code>data.frame</code> columns</h4>
+<p>Sometimes recive geodata stored in columns of a <code>data.frame</code>. Mostly, these are point objects, which can be converted to a geometry using the following code:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># note the order: lon - lat, which is x, y ! </span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>,<span class="st">"lat"</span>),<span class="at">crs =</span> <span class="dv">4326</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Rarely, they are lines (tipically origin - destination):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">geom =</span> <span class="fu">pmap</span>(<span class="fu">list</span>(start_lon,start_lat, end_lon,end_lat), \(x1, y1, x2, y2) <span class="fu">st_linestring</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(x1, y1, x2, y2), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>))))  <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_sf</span>(<span class="at">crs =</span> <span class="dv">4326</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="working-with-a-list-of-layers" class="level3" data-number="2.1.10">
+<h3 data-number="2.1.10" class="anchored" data-anchor-id="working-with-a-list-of-layers"><span class="header-section-number">2.1.10</span> Working with a list of layers</h3>
+<p>Both <code>ggplot2</code> and <code>tmap</code> work with the layers and <code>+</code> idiom. Using functional programming I can create a list of layers and concatenate them all with <code>Reduce</code>. This is a practical method when, e.g.&nbsp;I have a single sf object but want to selectively activate / deactivate parts of that layer in <code>tmap</code>. To do this, I split the sf object into a list of obects, create a tmap layer for each object and then concatenate them as described. E.g. take the <code>buildings</code> dataset from the <code>sf</code> package.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>buildings <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"gpkg/buildings.gpkg"</span>,<span class="at">package=</span><span class="st">"sf"</span>))</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="co"># say we want to selectively activate / deactivate a column named `cat_fac`</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>buildings<span class="sc">$</span>cat_fac <span class="ot">&lt;-</span> <span class="fu">cut</span>(buildings<span class="sc">$</span>cat, <span class="fu">seq</span>(<span class="dv">0</span>,<span class="fu">ceiling</span>(<span class="fu">max</span>(buildings<span class="sc">$</span>cat)<span class="sc">/</span><span class="dv">20</span>)<span class="sc">*</span><span class="dv">20</span>,<span class="dv">20</span>))</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="co"># this is how it looks</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(buildings) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> cat_fac))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/12532091/218038569-0c296878-4eb9-43e0-b4c4-1683f3812b93.png" class="img-fluid figure-img"></p>
+<figcaption>image</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>buildings <span class="sc">|&gt;</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    (\(x)<span class="fu">split</span>(x, x<span class="sc">$</span>cat_fac))() <span class="sc">|&gt;</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">imap</span>(\(x,y)<span class="fu">tm_shape</span>(x,<span class="at">name =</span> y) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"red"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Reduce</span>(<span class="st">"+"</span>, <span class="at">x =</span> _)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/12532091/218038922-fd2aa74b-2d14-44e7-b67c-fd1967c9a022.png" class="img-fluid figure-img"></p>
+<figcaption>image</figcaption>
+</figure>
+</div>
+</section>
+<section id="tmap-v4" class="level3" data-number="2.1.11">
+<h3 data-number="2.1.11" class="anchored" data-anchor-id="tmap-v4"><span class="header-section-number">2.1.11</span> Tmap V4</h3>
+<p>The new API takes a bit getting used to. Here is how to change the color palette to Spectral:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(myrast) <span class="sc">+</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">col.scale =</span> <span class="fu">tm_scale_continuous</span>(<span class="at">values =</span> cols4all<span class="sc">::</span><span class="fu">c4a</span>(<span class="at">palette =</span> <span class="st">"-Spectral"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="download-swissalti3d-tiles-with-custom-extent" class="level3" data-number="2.1.12">
+<h3 data-number="2.1.12" class="anchored" data-anchor-id="download-swissalti3d-tiles-with-custom-extent"><span class="header-section-number">2.1.12</span> Download swissAlti3D tiles with custom extent</h3>
+<p>https://gist.github.com/ratnanil/83d4cd439300e18b7666e4efde59ddf2</p>
+</section>
+<section id="map-matching" class="level3" data-number="2.1.13">
+<h3 data-number="2.1.13" class="anchored" data-anchor-id="map-matching"><span class="header-section-number">2.1.13</span> Map Matching</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>HighWays <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"sqlite/test3.sqlite"</span>,<span class="at">package=</span><span class="st">"sf"</span>), <span class="st">"HighWays"</span>)[<span class="dv">6</span>, ] </span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="co"># since we want to find the closest location on the road over ALL roads</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co"># we need to create a union of the roads first.</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>HighWays <span class="ot">&lt;-</span> <span class="fu">st_union</span>(HighWays)</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's simulate 1000 GPS locations within 3km of the highway</span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>gps_locations <span class="ot">&lt;-</span> HighWays <span class="sc">|&gt;</span> <span class="fu">st_buffer</span>(<span class="dv">3000</span>) <span class="sc">|&gt;</span> <span class="fu">st_sample</span>(<span class="dv">100</span>)</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we can get the nearset point for each GPS location</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>nearest <span class="ot">&lt;-</span> <span class="fu">st_nearest_points</span>(gps_locations, HighWays)</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a><span class="co"># The output is a line for each point (see plot below)</span></span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we need convert the output from LINE to POINT</span></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>near_p <span class="ot">&lt;-</span> <span class="fu">st_cast</span>(nearest, <span class="st">"POINT"</span>)</span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a><span class="co"># now we subset the points. Uneven numbers are the original</span></span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a><span class="co"># points, even numbers are the new, mapmatched points.</span></span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>near_from <span class="ot">&lt;-</span> near_p[<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)]</span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>near_to <span class="ot">&lt;-</span> near_p[<span class="fu">c</span>(<span class="cn">FALSE</span>,<span class="cn">TRUE</span>)]</span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(HighWays) <span class="sc">+</span> <span class="fu">tm_lines</span>() <span class="sc">+</span></span>
+<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(nearest) <span class="sc">+</span> <span class="fu">tm_lines</span>(<span class="at">lty =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(near_from) <span class="sc">+</span> <span class="fu">tm_dots</span>() <span class="sc">+</span></span>
+<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(near_to) <span class="sc">+</span> <span class="fu">tm_dots</span>(<span class="at">col =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="r-spatial_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://github.com/ratnanil/IT_diary/assets/12532091/abe181b9-c4ff-4087-9d6c-8548d50067db.png" class="img-fluid figure-img"></p>
+<figcaption>image</figcaption>
+</figure>
+</div>
+</section>
+<section id="data.frame-method-for-sf_layers-object" class="level3" data-number="2.1.14">
+<h3 data-number="2.1.14" class="anchored" data-anchor-id="data.frame-method-for-sf_layers-object"><span class="header-section-number">2.1.14</span> <code>data.frame</code> method for <code>sf_layers</code>-object</h3>
+<p>The function <code>st_layers()</code> returns an <code>sf_layers</code> object, which is basically a list that <em>could</em> easily be coerced to a data.frame. This is not possible by default, I first have to create a new method for a generic from another package (from <a href="https://stackoverflow.com/a/24831503/4139249">here</a>).</p>
+<p>I created an issue for this: https://github.com/r-spatial/sf/issues/2412</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OUTDATED??</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>as.data.frame.sf_layers <span class="ot">&lt;-</span> \(x) sf<span class="sc">:::</span><span class="fu">print.sf_layers</span>(x) <span class="sc">|&gt;</span> <span class="fu">data.frame</span>()</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>as_tibble.sf_layers <span class="ot">&lt;-</span> \(x) <span class="fu">as_tibble</span>(<span class="fu">as.data.frame</span>(x))      <span class="co"># optional, creates an as_tibble method</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co"># test this on an sqlite dataset:</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>layers <span class="ot">&lt;-</span> <span class="fu">st_layers</span>(<span class="fu">system.file</span>(<span class="st">"sqlite/test3.sqlite"</span>,<span class="at">package=</span><span class="st">"sf"</span>)) </span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(layers)</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(layers)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="terra" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="terra"><span class="header-section-number">2.2</span> terra</h2>
+<section id="datatypes" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="datatypes"><span class="header-section-number">2.2.1</span> Datatypes</h3>
+<p>From <a href="https://r.geocompx.org/read-write.html#raster-data-write">here</a></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Data type</th>
+<th>Minimum value</th>
+<th>Maximum value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>INT1U</td>
+<td>0</td>
+<td>255</td>
+</tr>
+<tr class="even">
+<td>INT2S</td>
+<td>-32,767</td>
+<td>32,767</td>
+</tr>
+<tr class="odd">
+<td>INT2U</td>
+<td>0</td>
+<td>65,534</td>
+</tr>
+<tr class="even">
+<td>INT4S</td>
+<td>-2,147,483,647</td>
+<td>2,147,483,647</td>
+</tr>
+<tr class="odd">
+<td>INT4U</td>
+<td>0</td>
+<td>4,294,967,296</td>
+</tr>
+<tr class="even">
+<td>FLT4S</td>
+<td>-3.4e+38</td>
+<td>3.4e+38</td>
+</tr>
+<tr class="odd">
+<td>FLT8S</td>
+<td>-1.7e+308</td>
+<td>1.7e+308</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="rasterize-a-vector-dataset" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="rasterize-a-vector-dataset"><span class="header-section-number">2.2.2</span> Rasterize a vector dataset</h3>
+<pre><code>zg &lt;- st_read("https://api3.geo.admin.ch/rest/services/api/MapServer/ch.swisstopo.swissboundaries3d-kanton-flaeche.fill/9?geometryFormat=geojson&amp;sr=4326")
+
+zg &lt;- st_transform(zg, 2056)
+
+# 1. Create a template. 
+#    The extent could come from a different object
+template &lt;- rast(res = 1000, crs = crs(zg), extent = ext(zg))
+
+zg_ras &lt;- rasterize(zg, template, field = 1)
+
+plot(zg_ras)</code></pre>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./base-R.html" class="pagination-link" aria-label="Base-R">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Base-R</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ggplot.html" class="pagination-link" aria-label="Ggplot">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ggplot</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

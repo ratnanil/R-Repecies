@@ -9,9 +9,15 @@ book:
     - index.qmd
     - base-R.qmd
     - r-spatial.qmd
+    - geospatial.qmd
     - ggplot.qmd
     - rstudio.qmd
     
+
+execute: 
+  warning: false
+
+message: false
 
 format:
   html:

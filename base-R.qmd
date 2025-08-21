@@ -2,10 +2,10 @@
 title: "Base-R"
 ---
 
-### Issues with special characters ins windows user names
+## Issues with special characters ins windows user names
 
 I phrased the issue [here](https://community.rstudio.com/t/rstudio-issues-with-special-characters-in-windows-user-name/148334)
->
+
 > ..we have at least one or two students with special characters in their windows username. This leads to the situation as described [here](https://community.rstudio.com/t/hello-there-im-having-a-error-message-that-i-cant-understand/137805/4?u=rata).
 > 
 > The errors are always a bit different. The latest student has this error message showing up in the RStudio GUI:
@@ -58,7 +58,7 @@ We solved it by creating a new Folder without speical characters `C:\Users\safe-
 
 Now, R searches for `.Renviron` and `.Rprofile` in `C:\Users\safe-username` and installs R Libraries in `C:\Users\safe-username\R_libraries`. In this way, the special character issue is resolved. I'm not sure if this is the best method, but it works!
 
-### Segmenting a vector based on a series of TRUE / FALSE values
+## Segmenting a vector based on a series of TRUE / FALSE values
 
 Often when dealing with movement trajectories, I need to build segments depending whether a condition (e.g. time difference between the samples) is true or false. The following fuction is well equipped for this:
 
@@ -69,7 +69,7 @@ rle_id <- function(vec){
   }
 ```
 
-### Conntect to a (Postgres) Database
+## Conntect to a (Postgres) Database
 
 ```
 library(DBI)
@@ -82,7 +82,7 @@ con <- dbConnect(RPostgres::Postgres(),
 ```
 
 
-### Remove sepecial characters
+## Remove sepecial characters
 
 
 https://stackoverflow.com/a/20495866
@@ -102,7 +102,7 @@ stringi::stri_trans_general(x, "Latin-ASCII")
 ```
 
 
-### Readr: invalid multibyte string / encoding issue
+## Readr: invalid multibyte string / encoding issue
 
 Even if the file is downloaded explicitly as UTF-8 from teams, the characters dont seem to be converted correctly. I get the following issue when trying to import it using readr.
 
@@ -117,7 +117,7 @@ read_delim("file.csv", ";", locale = locale(encoding="latin1"))
 ```
 
 
-### Rowwise functions
+## Rowwise functions
 
 Dplyr allows you to do elementwise calculations using `rowwise`. But this can be very slow, since it groups the whole dataframe by row. I created a little helper function that does rowwise calculations:
 

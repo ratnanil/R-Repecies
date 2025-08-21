@@ -4,7 +4,7 @@ subtitle: " (sf, terra, tmap)"
 ---
 
 
-### Default startup options
+## Default startup options
 
 These options could be included in rprofile or the like:
 
@@ -25,11 +25,11 @@ like so:
 
 
 
-### Misc
+## Misc
 
 - get linked software versions: `sf::sf_extSoftVersion()`
 
-### Get the "negative" of a polygon
+## Get the "negative" of a polygon
 
 I usually want this for visualisation purposes
 
@@ -52,9 +52,9 @@ st_negative(nc, 0) |> st_geometry() |>  plot(col = 1)
 ```
 
 
-### Bounding box to polygon
+## Bounding box to polygon
 
-#### Case 1
+### Case 1
 
 Assuming you have a bounding box as four numeric values, xmin, ymin, xmax, ymax.
 
@@ -88,18 +88,13 @@ llur2poly <- \(xmin,ymin,xmax,ymax, crs = 2056){
 
 
 
-#### Case 2
+### Case 2
 
 assuming you have an object named `towns`:
 
 ```r
 st_as_sfc(st_bbox(towns))
 ```
-
-#### Terra ext to sf Polygon
-
-    ext(rastobj) |> vect() |> as("Spatial") |> st_as_sfc()
-
 
 
 ### Case 3 (Expanding the bounding box)
@@ -119,10 +114,16 @@ rbind(b,b3) |> st_sfc() |> plot()
 
 
 
+## Terra ext to sf Polygon
+
+```{.r}
+ext(rastobj) |> vect() |> as("Spatial") |> st_as_sfc()
+```
 
 
 
-### sf's example datasets
+
+## sf's example datasets
 
 I'm always wondering what spatial vector example data is provided by the `sf` package. This is how you find out:
 
@@ -181,7 +182,7 @@ read_sf(system.file("sqlite/test3.sqlite",package="sf"), "Towns") # more specifi
 ```
 
 
-### Country Borders
+## Country Borders
 
 RNaturalEarth has many worldwide datasets to use:
 
@@ -195,7 +196,7 @@ plot(southamerica["admin"])
 ![image](https://user-images.githubusercontent.com/12532091/198558013-ddd8a4e5-adec-43f0-8cd4-72710391fb58.png)
 
 
-### Erase
+## Erase
 
 https://github.com/r-spatial/sf/issues/346#issuecomment-302046063
 
@@ -205,14 +206,14 @@ st_erase = function(x, y) st_difference(x, st_union(st_combine(y)))
 
 
 
-### Cast POINT to LINESTRING
+## Cast POINT to LINESTRING
 
 When casting points to linestring with `group_by() |> summarise() |> st_cast("LINESTRING")` I need to pass the option `do_union = FALSE` to `summarise()`, otherwise the order of the points is not preserved (see [my GitHub issue](https://github.com/r-spatial/sf/issues/692) on this).
 
 
-### Creating Simple Feature Geometries
+## Creating Simple Feature Geometries
 
-#### From simple vectors
+### From simple vectors
 
 From time to time, I need to create simple feature geometries out of thin air. Each type of simple feature requires a specific data type. They could be inferred (since they make a lot of sense) but I'm lazy, hence the documentation here:
 
@@ -278,7 +279,7 @@ st_polygon(
 ```
 
 
-#### from `data.frame` columns
+### from `data.frame` columns
 
 Sometimes recive geodata stored in columns of a `data.frame`. Mostly, these are point objects, which can be converted to a geometry using the following code:
 
@@ -298,7 +299,7 @@ df |>
 ``` 
 
 
-### Working with a list of layers
+## Working with a list of layers
 
 Both `ggplot2` and `tmap` work with the layers and `+` idiom. Using functional programming I can create a list of layers and concatenate them all with `Reduce`. This is a practical method when, e.g. I have a single sf object but want to selectively activate / deactivate parts of that layer in `tmap`. To do this, I split the sf object into a list of obects, create a tmap layer for each object and then concatenate them as described. E.g. take the `buildings` dataset from the `sf` package.
 
@@ -324,7 +325,7 @@ buildings |>
 
 ![image](https://user-images.githubusercontent.com/12532091/218038922-fd2aa74b-2d14-44e7-b67c-fd1967c9a022.png)
 
-### Tmap V4
+## Tmap V4
 
 The new API takes a bit getting used to. Here is how to change the color palette to Spectral:
 
@@ -335,11 +336,11 @@ tm_shape(myrast) +
 ```
 
 
-### Download swissAlti3D tiles with custom extent
+## Download swissAlti3D tiles with custom extent
 
 https://gist.github.com/ratnanil/83d4cd439300e18b7666e4efde59ddf2
 
-### Map Matching
+## Map Matching
 
 ```{r}
 library(sf)
@@ -378,12 +379,14 @@ tm_shape(HighWays) + tm_lines() +
 
 ### `data.frame` method for `sf_layers`-object
 
+*OUTDATED??*
+
 The function `st_layers()` returns an `sf_layers` object, which is basically a list that *could* easily be coerced to a data.frame. This is not possible by default, I first have to create a new method for a generic from another package (from [here](https://stackoverflow.com/a/24831503/4139249)).
 
 I created an issue for this: https://github.com/r-spatial/sf/issues/2412
 
 ```{.r}
-# OUTDATED??
+
 
 
 as.data.frame.sf_layers <- \(x) sf:::print.sf_layers(x) |> data.frame()

@@ -1,0 +1,21 @@
+---
+title: "Swisstopo API"
+---
+
+I frequently need the border of a single canton / municipality etc. Downloading the *entire* swissTLM3D Dataset is extremely cumbersome, but there is an easyer way!
+
+- Go to [map.geo.admin.ch](https://map.geo.admin.ch/) and select the object you are interested in
+- Click on *Linked Data URI* and then *Download as GeoJSON*. 
+- Use the URL to `wget` the object (a json file).
+- Use `jq` to extract the first (and only) feature and export this to geojson. 
+
+Note that you can also change the CRS in the URL, but I think the geojson specification only supports WGS84. 
+
+```{.sh}
+wget -O schaffhausen.json https://api3.geo.admin.ch/rest/services/api/MapServer/ch.swisstopo.swissboundaries3d-kanton-flaeche.fill/14\?geometryFormat\=geojson\&sr\=4326
+jq '.feature' schaffhausen.geojson > schaffhausen_fixed.geojson
+
+```
+
+
+TODO: See if there are simpler / direct ways to use the swisstopo API.

@@ -3,3 +3,5 @@
 _book
 /.quarto/
 .Rhistory
+**/*.quarto_ipynb
+projinfo_plots

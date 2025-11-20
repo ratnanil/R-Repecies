@@ -3,8 +3,7 @@ project:
 
 book:
   title: "R-Tricks"
-  author: "Norah Jones"
-  date: "8/18/2025"
+  author: "Nils Ratnaweera"
   chapters:
     - index.qmd
     - base-R.qmd
@@ -12,6 +11,7 @@ book:
     - geospatial.qmd
     - ggplot.qmd
     - rstudio.qmd
+    - swisstopo-api.qmd
     
 
 execute: 

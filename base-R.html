@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.19">
+<meta name="generator" content="quarto-1.9.11">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -74,10 +74,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-46eeb4c476de49ef7df495821a6125d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-a5dfee7ccc7f20503a6465e15a2cff9c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d9c77dfe7a0221f9a51a4f8aebee4486.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1b94657bcec7f050019a58791b04895b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -131,9 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="./index.html" class="sidebar-logo-link">
-      </a>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">R-Tricks</a> 
     </div>
@@ -165,14 +163,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./geospatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Geospatial</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./ggplot.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ggplot</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ggplot</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./rstudio.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">RStudio</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">RStudio</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./swisstopo-api.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Swisstopo API</span></span></a>
   </div>
 </li>
     </ul>
@@ -185,12 +195,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#issues-with-special-characters-ins-windows-user-names" id="toc-issues-with-special-characters-ins-windows-user-names" class="nav-link active" data-scroll-target="#issues-with-special-characters-ins-windows-user-names"><span class="header-section-number">1.0.1</span> Issues with special characters ins windows user names</a></li>
-  <li><a href="#segmenting-a-vector-based-on-a-series-of-true-false-values" id="toc-segmenting-a-vector-based-on-a-series-of-true-false-values" class="nav-link" data-scroll-target="#segmenting-a-vector-based-on-a-series-of-true-false-values"><span class="header-section-number">1.0.2</span> Segmenting a vector based on a series of TRUE / FALSE values</a></li>
-  <li><a href="#conntect-to-a-postgres-database" id="toc-conntect-to-a-postgres-database" class="nav-link" data-scroll-target="#conntect-to-a-postgres-database"><span class="header-section-number">1.0.3</span> Conntect to a (Postgres) Database</a></li>
-  <li><a href="#remove-sepecial-characters" id="toc-remove-sepecial-characters" class="nav-link" data-scroll-target="#remove-sepecial-characters"><span class="header-section-number">1.0.4</span> Remove sepecial characters</a></li>
-  <li><a href="#readr-invalid-multibyte-string-encoding-issue" id="toc-readr-invalid-multibyte-string-encoding-issue" class="nav-link" data-scroll-target="#readr-invalid-multibyte-string-encoding-issue"><span class="header-section-number">1.0.5</span> Readr: invalid multibyte string / encoding issue</a></li>
-  <li><a href="#rowwise-functions" id="toc-rowwise-functions" class="nav-link" data-scroll-target="#rowwise-functions"><span class="header-section-number">1.0.6</span> Rowwise functions</a></li>
+  <li><a href="#issues-with-special-characters-ins-windows-user-names" id="toc-issues-with-special-characters-ins-windows-user-names" class="nav-link active" data-scroll-target="#issues-with-special-characters-ins-windows-user-names"><span class="header-section-number">1.1</span> Issues with special characters ins windows user names</a></li>
+  <li><a href="#segmenting-a-vector-based-on-a-series-of-true-false-values" id="toc-segmenting-a-vector-based-on-a-series-of-true-false-values" class="nav-link" data-scroll-target="#segmenting-a-vector-based-on-a-series-of-true-false-values"><span class="header-section-number">1.2</span> Segmenting a vector based on a series of TRUE / FALSE values</a></li>
+  <li><a href="#conntect-to-a-postgres-database" id="toc-conntect-to-a-postgres-database" class="nav-link" data-scroll-target="#conntect-to-a-postgres-database"><span class="header-section-number">1.3</span> Conntect to a (Postgres) Database</a></li>
+  <li><a href="#remove-sepecial-characters" id="toc-remove-sepecial-characters" class="nav-link" data-scroll-target="#remove-sepecial-characters"><span class="header-section-number">1.4</span> Remove sepecial characters</a></li>
+  <li><a href="#readr-invalid-multibyte-string-encoding-issue" id="toc-readr-invalid-multibyte-string-encoding-issue" class="nav-link" data-scroll-target="#readr-invalid-multibyte-string-encoding-issue"><span class="header-section-number">1.5</span> Readr: invalid multibyte string / encoding issue</a></li>
+  <li><a href="#rowwise-functions" id="toc-rowwise-functions" class="nav-link" data-scroll-target="#rowwise-functions"><span class="header-section-number">1.6</span> Rowwise functions</a></li>
   </ul>
 </nav>
     </div>
@@ -216,9 +226,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="issues-with-special-characters-ins-windows-user-names" class="level3" data-number="1.0.1">
-<h3 data-number="1.0.1" class="anchored" data-anchor-id="issues-with-special-characters-ins-windows-user-names"><span class="header-section-number">1.0.1</span> Issues with special characters ins windows user names</h3>
-<p>I phrased the issue <a href="https://community.rstudio.com/t/rstudio-issues-with-special-characters-in-windows-user-name/148334">here</a> &gt; &gt; ..we have at least one or two students with special characters in their windows username. This leads to the situation as described <a href="https://community.rstudio.com/t/hello-there-im-having-a-error-message-that-i-cant-understand/137805/4?u=rata">here</a>. &gt; &gt; The errors are always a bit different. The latest student has this error message showing up in the RStudio GUI: &gt; &gt; <code>&gt; Error in nchar(homeDir): invalid multibyte string, element 1 &gt;</code> &gt; The RStudio console has several warning messages: &gt; &gt; <code>&gt; Warning message: &gt; In normalizePath(path.expand(path), winslash, mustWork) : path[1]="C:/Users/N�me/Documents &gt;</code> &gt; &gt; While the username in this case would be <code>Nöme</code>.</p>
+<section id="issues-with-special-characters-ins-windows-user-names" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="issues-with-special-characters-ins-windows-user-names"><span class="header-section-number">1.1</span> Issues with special characters ins windows user names</h2>
+<p>I phrased the issue <a href="https://community.rstudio.com/t/rstudio-issues-with-special-characters-in-windows-user-name/148334">here</a></p>
+<blockquote class="blockquote">
+<p>..we have at least one or two students with special characters in their windows username. This leads to the situation as described <a href="https://community.rstudio.com/t/hello-there-im-having-a-error-message-that-i-cant-understand/137805/4?u=rata">here</a>.</p>
+<p>The errors are always a bit different. The latest student has this error message showing up in the RStudio GUI:</p>
+<pre><code>Error in nchar(homeDir): invalid multibyte string, element 1</code></pre>
+<p>The RStudio console has several warning messages:</p>
+<pre><code>Warning message:
+In normalizePath(path.expand(path), winslash, mustWork) : path[1]="C:/Users/N�me/Documents</code></pre>
+<p>While the username in this case would be <code>Nöme</code>.</p>
+</blockquote>
 <p>My guess is that the error comes when R tries to search for an <code>.RProfile</code> or <code>.Renviron</code> file in <code>C:/Users/Nöme/Documents</code>, but fails because of the special character. My hope is that we can prevent R to search in this path by manually setting a path to look for the said files. A quick refresher on R’s startup behaviour (from <a href="https://csgillespie.github.io/efficientR/set-up.html">here</a>):</p>
 <p>Two files are read each time R starts (unless one of the command line options outlined above is used):</p>
 <ol type="1">
@@ -297,16 +316,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>Now, R searches for <code>.Renviron</code> and <code>.Rprofile</code> in <code>C:\Users\safe-username</code> and installs R Libraries in <code>C:\Users\safe-username\R_libraries</code>. In this way, the special character issue is resolved. I’m not sure if this is the best method, but it works!</p>
 </section>
-<section id="segmenting-a-vector-based-on-a-series-of-true-false-values" class="level3" data-number="1.0.2">
-<h3 data-number="1.0.2" class="anchored" data-anchor-id="segmenting-a-vector-based-on-a-series-of-true-false-values"><span class="header-section-number">1.0.2</span> Segmenting a vector based on a series of TRUE / FALSE values</h3>
+<section id="segmenting-a-vector-based-on-a-series-of-true-false-values" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="segmenting-a-vector-based-on-a-series-of-true-false-values"><span class="header-section-number">1.2</span> Segmenting a vector based on a series of TRUE / FALSE values</h2>
 <p>Often when dealing with movement trajectories, I need to build segments depending whether a condition (e.g.&nbsp;time difference between the samples) is true or false. The following fuction is well equipped for this:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rle_id <span class="ot">&lt;-</span> <span class="cf">function</span>(vec){</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rle</span>(vec)<span class="sc">$</span>lengths</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.factor</span>(<span class="fu">rep</span>(<span class="fu">seq_along</span>(x), <span class="at">times=</span>x))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rle_id <span class="ot">&lt;-</span> <span class="cf">function</span>(vec){</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rle</span>(vec)<span class="sc">$</span>lengths</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.factor</span>(<span class="fu">rep</span>(<span class="fu">seq_along</span>(x), <span class="at">times=</span>x))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="conntect-to-a-postgres-database" class="level3" data-number="1.0.3">
-<h3 data-number="1.0.3" class="anchored" data-anchor-id="conntect-to-a-postgres-database"><span class="header-section-number">1.0.3</span> Conntect to a (Postgres) Database</h3>
+<section id="conntect-to-a-postgres-database" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="conntect-to-a-postgres-database"><span class="header-section-number">1.3</span> Conntect to a (Postgres) Database</h2>
 <pre><code>library(DBI)
 con &lt;- dbConnect(RPostgres::Postgres(),
                  dbname = "mydb",
@@ -315,8 +334,8 @@ con &lt;- dbConnect(RPostgres::Postgres(),
                  user = "myuser",
                  password = "mypassword")</code></pre>
 </section>
-<section id="remove-sepecial-characters" class="level3" data-number="1.0.4">
-<h3 data-number="1.0.4" class="anchored" data-anchor-id="remove-sepecial-characters"><span class="header-section-number">1.0.4</span> Remove sepecial characters</h3>
+<section id="remove-sepecial-characters" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="remove-sepecial-characters"><span class="header-section-number">1.4</span> Remove sepecial characters</h2>
 <p>https://stackoverflow.com/a/20495866</p>
 <pre><code>&gt; iconv("äöüèéàüöä", to="ASCII//TRANSLIT")
 [1] "aoueeauoa"</code></pre>
@@ -325,15 +344,15 @@ con &lt;- dbConnect(RPostgres::Postgres(),
 stringi::stri_trans_general(x, "Latin-ASCII")
 #&gt; [1] "sonar"   "camion"  "egoiste"</code></pre>
 </section>
-<section id="readr-invalid-multibyte-string-encoding-issue" class="level3" data-number="1.0.5">
-<h3 data-number="1.0.5" class="anchored" data-anchor-id="readr-invalid-multibyte-string-encoding-issue"><span class="header-section-number">1.0.5</span> Readr: invalid multibyte string / encoding issue</h3>
+<section id="readr-invalid-multibyte-string-encoding-issue" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="readr-invalid-multibyte-string-encoding-issue"><span class="header-section-number">1.5</span> Readr: invalid multibyte string / encoding issue</h2>
 <p>Even if the file is downloaded explicitly as UTF-8 from teams, the characters dont seem to be converted correctly. I get the following issue when trying to import it using readr.</p>
 <pre><code>Error in nchar(x, "width") : invalid multibyte string, element 1</code></pre>
 <p>This solved it:</p>
 <pre><code>read_delim("file.csv", ";", locale = locale(encoding="latin1"))</code></pre>
 </section>
-<section id="rowwise-functions" class="level3" data-number="1.0.6">
-<h3 data-number="1.0.6" class="anchored" data-anchor-id="rowwise-functions"><span class="header-section-number">1.0.6</span> Rowwise functions</h3>
+<section id="rowwise-functions" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="rowwise-functions"><span class="header-section-number">1.6</span> Rowwise functions</h2>
 <p>Dplyr allows you to do elementwise calculations using <code>rowwise</code>. But this can be very slow, since it groups the whole dataframe by row. I created a little helper function that does rowwise calculations:</p>
 <pre><code>element_wise &lt;- function(..., fun = mean) {
   do.call(cbind, list(...)) |&gt; apply(1, fun)
@@ -399,13 +418,14 @@ mtcars |&gt;
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

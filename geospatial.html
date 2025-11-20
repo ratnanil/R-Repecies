@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.11">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Geospatial – R-Tricks</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./ggplot.html" rel="next">
+<link href="./r-spatial.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-a5dfee7ccc7f20503a6465e15a2cff9c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-1b94657bcec7f050019a58791b04895b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./geospatial.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Geospatial</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R-Tricks</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./base-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Base-R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-spatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R Spatial</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./geospatial.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Geospatial</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ggplot</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rstudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">RStudio</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./swisstopo-api.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Swisstopo API</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#geodata" id="toc-geodata" class="nav-link active" data-scroll-target="#geodata"><span class="header-section-number">3.1</span> Geodata</a></li>
+  <li><a href="#misc" id="toc-misc" class="nav-link" data-scroll-target="#misc"><span class="header-section-number">3.2</span> Misc</a>
+  <ul class="collapse">
+  <li><a href="#degrees-to-meters-e.g.-for-raster-resolution" id="toc-degrees-to-meters-e.g.-for-raster-resolution" class="nav-link" data-scroll-target="#degrees-to-meters-e.g.-for-raster-resolution"><span class="header-section-number">3.2.1</span> Degrees to Meters (e.g.&nbsp;for raster resolution)</a></li>
+  <li><a href="#a-non-sensical-experiment" id="toc-a-non-sensical-experiment" class="nav-link" data-scroll-target="#a-non-sensical-experiment"><span class="header-section-number">3.2.2</span> A (non sensical) experiment:</a></li>
+  <li><a href="#a-second-experiment" id="toc-a-second-experiment" class="nav-link" data-scroll-target="#a-second-experiment"><span class="header-section-number">3.2.3</span> A second experiment</a></li>
+  </ul></li>
+  <li><a href="#crs-projections-datums" id="toc-crs-projections-datums" class="nav-link" data-scroll-target="#crs-projections-datums"><span class="header-section-number">3.3</span> CRS, Projections, Datums</a>
+  <ul class="collapse">
+  <li><a href="#a-working-model" id="toc-a-working-model" class="nav-link" data-scroll-target="#a-working-model"><span class="header-section-number">3.3.1</span> A working model</a></li>
+  <li><a href="#s2-library" id="toc-s2-library" class="nav-link" data-scroll-target="#s2-library"><span class="header-section-number">3.3.2</span> S2 library</a></li>
+  <li><a href="#an-experiment" id="toc-an-experiment" class="nav-link" data-scroll-target="#an-experiment"><span class="header-section-number">3.3.3</span> An experiment</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Geospatial</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearthdata)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># remote::install_github("ropensci/rnaturalearthhires")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="geodata" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="geodata"><span class="header-section-number">3.1</span> Geodata</h2>
+<ul>
+<li><a href="https://star.cs.ucr.edu/about.html">UCR STAR</a></li>
+<li><a href="https://wiki.openstreetmap.org/wiki/Planet.gpx#Visualisation" class="uri">https://wiki.openstreetmap.org/wiki/Planet.gpx#Visualisation</a></li>
+</ul>
+</section>
+<section id="misc" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="misc"><span class="header-section-number">3.2</span> Misc</h2>
+<section id="degrees-to-meters-e.g.-for-raster-resolution" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="degrees-to-meters-e.g.-for-raster-resolution"><span class="header-section-number">3.2.1</span> Degrees to Meters (e.g.&nbsp;for raster resolution)</h3>
+<p>When dealing with Geographic Coordinates (e.g.&nbsp;Lat / Lon), it’s helpful to convert the units to meters to get a feel for the real world distances you are dealing with. Assuming the Earth is a sphere with a circumference of 40’075 km:</p>
+<ul>
+<li>1° of latitude distance (i.e.&nbsp;distance in the y direction, towards a pole) is always 111.32 km
+<ul>
+<li>A raster resolution of 0.1666667 has a cell height of ~18.5 km (<code>111.32 * 0.1666667</code>)</li>
+</ul></li>
+<li>1° of longitude distance (i.e.&nbsp;distance in the x direction, parallel to the equator) varies, depending on the latitude the following function (<a href="https://stackoverflow.com/a/39540339/4139249">from here</a>) approximates it:</li>
+</ul>
+<p><span class="math display">\[\text{Length in km of 1° of longitude} = 40075* cos( \text{latitude} ) / 360\]</span></p>
+<p>The functions expects latitude in degrees. The <code>cos</code> function in R expects it in Rad. Implemented in R, the function above is:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>length_1deg_longitude <span class="ot">&lt;-</span> \(latitude) <span class="dv">40075</span> <span class="sc">*</span> <span class="fu">cos</span>(latitude <span class="sc">/</span> <span class="dv">180</span> <span class="sc">*</span> <span class="fl">3.14159</span>) <span class="sc">/</span> <span class="dv">360</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Lat 0 (equator): 111.3km</li>
+<li>Lat 45: 78 km</li>
+<li>Lat 80: 19 km</li>
+<li>Lat 90: 0 km</li>
+<li>Resolutions are often discribed in degrees, minutes and seconds. To convert these into decimal degrees: <span class="math display">\[\text{degrees}_\text{decimal} = \text{degrees}+ \frac{\text{minutes}}{60} + \frac{\text{seconds}}{3600}\]</span>
+<ul>
+<li>30 arcseconds: 0.00833333 decimal degrees</li>
+<li>1 arcminute: 0.01677777 decimal degrees</li>
+<li>10 arcminutes: 0.16777777 decimal degrees</li>
+<li>1 degree: 1 decimal degrees</li>
+</ul></li>
+</ul>
+<p>The <a href="https://stackoverflow.com/a/28372037/4139249">haverstine distance function</a> gives a good approximation of the distance in meters.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>haverstine_distance <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  lon1,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  lat1,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lon2 =</span> lon1<span class="sc">+</span><span class="dv">1</span>, <span class="co"># default: 1 degree in the x-direction</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat2 =</span> lat1    <span class="co"># default: 0 degrees in the y-direction</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  ) {</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    R <span class="ot">&lt;-</span> <span class="fl">6378.137</span>                                <span class="co"># radius of earth in Km</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    dLat <span class="ot">&lt;-</span> (lat2<span class="sc">-</span>lat1)<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    dLon <span class="ot">&lt;-</span> (lon2<span class="sc">-</span>lon1)<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    a <span class="ot">&lt;-</span> <span class="fu">sin</span>((dLat<span class="sc">/</span><span class="dv">2</span>))<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">cos</span>(lat1<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)<span class="sc">*</span><span class="fu">cos</span>(lat2<span class="sc">*</span>pi<span class="sc">/</span><span class="dv">180</span>)<span class="sc">*</span>(<span class="fu">sin</span>(dLon<span class="sc">/</span><span class="dv">2</span>))<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    c <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">atan2</span>(<span class="fu">sqrt</span>(a), <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>a))</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    d <span class="ot">&lt;-</span> R <span class="sc">*</span> c</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span> (d <span class="sc">*</span> <span class="dv">1000</span>)                            <span class="co"># distance in meters</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>To convert a raster resolution of 0.166666 to meters with the above function, simply do:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">haverstine_distance</span>(<span class="dv">0</span>, <span class="dv">45</span>)<span class="sc">*</span><span class="fl">0.1666666</span> <span class="co"># at 45 latitude</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13119.04</code></pre>
+</div>
+</div>
+</section>
+<section id="a-non-sensical-experiment" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="a-non-sensical-experiment"><span class="header-section-number">3.2.2</span> A (non sensical) experiment:</h3>
+<p>Visualize the horizontal and the vertical distance at each degree on the globe:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dist_in_deg <span class="ot">=</span> <span class="dv">1</span> <span class="co"># change to 0.166666 for a raster resolution of this value</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">expand.grid</span>(<span class="at">lat =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">90</span>, <span class="dv">90</span>, <span class="dv">1</span>), <span class="at">lon =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">180</span>, <span class="dv">180</span>, <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">hdist =</span> <span class="fu">haverstine_distance</span>(lon, lat, lon<span class="sc">+</span>dist_in_deg, lat),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">vdist =</span> <span class="fu">haverstine_distance</span>(lon, lat, lon, lat<span class="sc">+</span>dist_in_deg)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pivot_longer</span>(<span class="fu">ends_with</span>(<span class="st">"dist"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(lon, lat, <span class="at">fill =</span> value)) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_raster</span>() <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_fill_viridis_c</span>() <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>name)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="geospatial_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="a-second-experiment" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="a-second-experiment"><span class="header-section-number">3.2.3</span> A second experiment</h3>
+<p>Horizontal Distance at each latitude for different raster resolutions</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">expand.grid</span>(<span class="at">lat =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">90</span>, <span class="dv">90</span>, <span class="dv">1</span>), <span class="at">res =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.16666666</span>, <span class="fl">0.008333333</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">hdist =</span> <span class="fu">haverstine_distance</span>(<span class="dv">0</span>, lat)<span class="sc">*</span>res</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(hdist, lat)) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>res, <span class="at">scales =</span> <span class="st">"free_x"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="geospatial_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="crs-projections-datums" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="crs-projections-datums"><span class="header-section-number">3.3</span> CRS, Projections, Datums</h2>
+<section id="a-working-model" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="a-working-model"><span class="header-section-number">3.3.1</span> A working model</h3>
+<p>Coordinates are just numbers assigned to data. To interprete them, you need to know the Coordinate Reference System (CRS) they are stored in. For spatial data types (geopackage, shapefile, geotiff etc) the CRS is stored in the files metadata. For non spatial data types (e.g.&nbsp;a csv), this information must be stored in a different way. CRS Information can be referenced to with <code>Authority: Code</code>, whereas the most used authority is the European Petrolium Survey Group (EPSG).</p>
+<p>To visualize spatial data in 2D (on a screen or on paper), it differs whether the CRS is a <em>projected</em> or a <em>geographic</em> CRS . If its the former, then the coordinates can be used in a Cartesian plane (classic x/y scatter plot type). If its the latter, then it needs to be <em>projected</em> into 2D first. In GIS that focus on visualizing the data constantly, e.g.&nbsp;<strong>in ArcGIS or QGIS, this information is stored in the project file</strong>. In R or Python, this information must be provided onto the plotting library when visualizing the data explicitly.</p>
+<p>Confusingly, the methods of projecting geographic coordinates into 2D is referenced to with the same EPSG Codes as the CRS. So what happens when you have a geographic coordinate system (e.g.&nbsp;WGS84) and you “reproject” it to 2d using EPSG 4326? I’m not sure, but if <a href="https://gis.stackexchange.com/a/387518/40929">this SO answer</a> is correct, it might shed some light on the question:</p>
+<blockquote class="blockquote">
+<p>EPSG 4326 (i.e.&nbsp;WGS 84) is not a projection. But if you don’t associate a projection to this geographic coordinate system, and naively render the coordinates as x/y coordinates on a grid, you do get something that is sort of a projection: the pseudo plate carée (equirectangular) projection. (This is not the same as an actual plate carée projection with a WGS 84 GCS, as this would have units in metres, not degrees).</p>
+</blockquote>
+<p>This is all good, but I have trouble understanding <a href="https://www.isric.org/explore/soilgrids/faq-soilgrids#How_can_I_access_SoilGrids">this</a>:</p>
+<blockquote class="blockquote">
+<p>To deal with an increasing number of inputs and computation demands, SoilGrids has since 2019 been computed on an equal-area projection. After a thorough comparison, the Homolosine projection was identified as the most efficient in an open source software framework.</p>
+<p>The Homolosine projection is not mandatory in any way. The WMS and WCS publish the SoilGrids maps in the following alternative SRSs:</p>
+<ul>
+<li>EPSG:4326 - the popular Marinus of Tyre projection (aka Plate Carré) applied on the WGS84 datum. <strong>It expands the surface area of the globe by 60%.</strong></li>
+</ul>
+</blockquote>
+</section>
+<section id="s2-library" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="s2-library"><span class="header-section-number">3.3.2</span> S2 library</h3>
+<p>You need to be careful with geographic CRS when calculating distances, areas or angles, or doing other spatial operations. For example in R (<code>sf</code>), until June 2020, if you a spatial operation on data with a geographic CRS, “<em>you are carrying out an operation that assumes these data lie in a flat plane, where one degree longitude equals one degree latitude, irrespective where you are on the world. This means that your data are assumed implicitly to be projected to the equirectangular projection</em>” (see <a href="https://r-spatial.org/r/2020/06/17/s2.html">here</a>). As of version 1.0, <code>sf</code> uses googles <code>s2</code> library for spatial operations on geographic data. S2 is based on a spherical world: “<em>Although we know that an ellipsoid better approximates the Earths’ shape, computations done with s2 are all on a spere. The difference between ellipsoidal and spherical computations is roughly up to 0.5%</em>”. For areas (in North Carolina or globaly?) it is <span class="math inline">\(6.4 \times 10^{-5}\)</span>.</p>
+<p>More from <a href="https://r-spatial.org/r/2020/06/17/s2.html">this article</a></p>
+<blockquote class="blockquote">
+<p>As an example, consider the polygon from POLYGON((-150 -65, 0 -62, 120 -78, -150 -65)), drawn as a line in this projection</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://user-images.githubusercontent.com/12532091/227450732-a67393a9-476b-459e-8308-f2db6db25054.png" class="img-fluid figure-img"></p>
+<figcaption>image</figcaption>
+</figure>
+</div>
+<p>S2 geometry assumes that straight lines between points on the globe are not formed by straight lines in the equirectangular projection, but by great circles: the shortest path over the sphere. For the polygon above this would give: <img src="https://user-images.githubusercontent.com/12532091/227450938-066c9f53-c7ae-4a3f-b04d-d199f1450bd4.png" class="img-fluid" alt="image"></p>
+<p>where the light green polygon is the “straight line polygon” in equirectangular. Based on the great circle lines, this polygon now contains the South Pole:</p>
+</blockquote>
+</section>
+<section id="an-experiment" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="an-experiment"><span class="header-section-number">3.3.3</span> An experiment</h3>
+<p>To get my head around projections, I did a little experiment in R for the Remote Sensing class. Here’s the uncommented, untidy code… todo: tidy this up, comment it and paste the resulting plots!</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>world_countries <span class="ot">&lt;-</span> rnaturalearth<span class="sc">::</span><span class="fu">ne_countries</span>(<span class="at">returnclass =</span> <span class="st">"sf"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>switzerland <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">scale =</span> <span class="dv">10</span>, <span class="at">country =</span> <span class="st">"switzerland"</span>, <span class="at">returnclass =</span> <span class="st">"sf"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>ullr2poly <span class="ot">&lt;-</span> <span class="cf">function</span>(xmin, ymin, xmax, ymax){</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sapply</span>(\(x)<span class="fu">c</span>(xmin, ymin, xmax, ymax)[x]) <span class="sc">|&gt;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">matrix</span>(<span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_polygon</span>()</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>world_box <span class="ot">&lt;-</span> <span class="fu">ullr2poly</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="dv">180</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="dv">90</span>, <span class="at">xmax =</span> <span class="dv">180</span>, <span class="at">ymax =</span> <span class="dv">90</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_sfc</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_crs</span>(<span class="dv">4326</span>) </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">180</span>, <span class="dv">180</span>,<span class="dv">20</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">90</span>, <span class="dv">90</span>, <span class="dv">20</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(x) <span class="sc">*</span> <span class="fu">length</span>(y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 190</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>my_points  <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">x =</span> x, <span class="at">y =</span> y) <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"x"</span>,<span class="st">"y"</span>), <span class="at">remove =</span> <span class="cn">FALSE</span>, <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>my_circles <span class="ot">&lt;-</span> my_points <span class="sc">%&gt;%</span> </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_buffer</span>(<span class="fl">500e3</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>my_circles_filter <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(my_circles, <span class="fu">abs</span>(x) <span class="sc">!=</span> <span class="dv">180</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">st_area</span>(my_circles_filter) <span class="sc">%&gt;%</span> <span class="fu">as.numeric</span>() <span class="sc">%&gt;%</span> (\(x) ((x<span class="sc">/</span>pi)<span class="sc">^</span><span class="fl">0.5</span>)<span class="sc">/</span><span class="fl">1e3</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] 502.8590 502.8590 502.8590 502.8590 502.8590 502.8590 502.8590 502.8590
+  [9] 502.8590 502.8590 502.8590 502.8590 502.8590 502.8590 502.8590 502.8590
+ [17] 502.8590 502.7357 502.5137 502.7956 502.7170 502.7162 502.8304 502.5519
+ [25] 502.7189 502.6851 502.7367 502.5146 502.7821 502.6953 502.6814 502.8171
+ [33] 502.5299 502.7300 503.3939 503.5362 503.2203 503.6450 503.6450 503.2494
+ [41] 503.5462 503.3916 503.6818 503.3885 503.5313 503.2307 503.6450 503.6450
+ [49] 503.2436 503.5190 503.4005 502.9410 504.0113 503.5738 502.7975 502.8189
+ [57] 503.5797 504.0113 502.9423 503.6337 502.9409 504.0113 503.5923 502.7873
+ [65] 502.7921 503.5830 504.0113 502.9497 502.5709 503.9955 502.7381 502.3814
+ [73] 502.3822 502.7431 503.9879 502.5815 502.6267 502.5775 504.0029 502.7510
+ [81] 502.3903 502.3824 502.7305 504.0005 502.5554 502.5775 504.0029 502.7510
+ [89] 502.3903 502.3824 502.7305 504.0005 502.5554 502.5988 502.5709 503.9955
+ [97] 502.7381 502.3814 502.3822 502.7431 503.9879 502.5815 502.9409 504.0113
+[105] 503.5923 502.7873 502.7921 503.5830 504.0113 502.9497 503.6392 502.9410
+[113] 504.0113 503.5738 502.7975 502.8189 503.5797 504.0113 502.9423 503.3885
+[121] 503.5313 503.2307 503.6450 503.6450 503.2436 503.5190 503.4005 503.6825
+[129] 503.3939 503.5362 503.2203 503.6450 503.6450 503.2494 503.5462 503.3916
+[137] 502.7367 502.5146 502.7821 502.6953 502.6814 502.8171 502.5299 502.7300
+[145] 502.6684 502.7357 502.5137 502.7956 502.7170 502.7162 502.8304 502.5519
+[153] 502.7189 502.8590 502.8590 502.8590 502.8590 502.8590 502.8590 502.8590
+[161] 502.8590 502.8590 502.8590 502.8590 502.8590 502.8590 502.8590 502.8590
+[169] 502.8590 502.8590</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>mymap <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> world_countries, <span class="at">fill =</span> <span class="st">"darkgrey"</span>,<span class="at">color =</span> <span class="st">"lightgrey"</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_sf(data = my_circles, alpha = 0.3) +</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> x) <span class="sc">+</span> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> y) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_blank</span>(), <span class="at">panel.grid =</span> <span class="fu">element_line</span>(<span class="st">"orange"</span>, <span class="at">linetype =</span> <span class="dv">2</span>),<span class="at">panel.ontop =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>mymap</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="geospatial_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>mymap2 <span class="ot">&lt;-</span> mymap <span class="sc">+</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> my_points) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> my_circles_filter, <span class="at">alpha =</span> <span class="fl">0.3</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>lat <span class="ot">&lt;-</span> <span class="dv">45</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>lon <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>ortho <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">'+proj=ortho +lat_0='</span>, lat, <span class="st">' +lon_0='</span>, lon, <span class="st">' +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs'</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>circle <span class="ot">&lt;-</span> <span class="fu">st_point</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)) <span class="sc">%&gt;%</span> <span class="fu">st_buffer</span>(<span class="at">dist =</span> <span class="dv">6371000</span>) <span class="sc">%&gt;%</span> <span class="fu">st_sfc</span>(<span class="at">crs =</span> ortho)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># https://gist.github.com/fzenoni/ef23faf6d1ada5e4a91c9ef23b0ba2c1?permalink_comment_id=3106327</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>mymap <span class="sc">+</span> </span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> circle, <span class="at">fill =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">crs =</span> ortho) <span class="sc">+</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"transparent"</span>),</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"transparent"</span>, <span class="at">color=</span><span class="cn">NA</span>),</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.ontop =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="geospatial_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mymap2 <span class="sc">+</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> circle, <span class="at">fill =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">crs =</span> ortho) <span class="sc">+</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># labs(title = stringr::str_to_title(proji)) +</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="geospatial_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mymap <span class="sc">+</span> <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="st">"+proj=laea +lon_0=8 +lat_0=46 +ellps=WGS84 +no_defs"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="geospatial_files/figure-html/unnamed-chunk-7-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mymap <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> my_circles, <span class="at">alpha =</span> <span class="fl">0.3</span>)<span class="sc">+</span> <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="st">"+proj=laea +lon_0=8 +lat_0=46 +ellps=WGS84 +no_defs"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="geospatial_files/figure-html/unnamed-chunk-7-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>mymap <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> my_circles, <span class="at">alpha =</span> <span class="fl">0.3</span>)<span class="sc">+</span> <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="st">"+proj=laea +lat_0=53 +lon_0=9 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="geospatial_files/figure-html/unnamed-chunk-7-6.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mymap <span class="sc">+</span> <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="st">"+proj=moll"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="geospatial_files/figure-html/unnamed-chunk-7-7.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>mymap <span class="sc">+</span> <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="st">"+proj=aeqd"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="geospatial_files/figure-html/unnamed-chunk-7-8.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>mymap <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> my_circles, <span class="at">alpha =</span> <span class="fl">0.3</span>)<span class="sc">+</span> <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="st">"+proj=moll"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="geospatial_files/figure-html/unnamed-chunk-7-9.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># does not seem to work. see https://stackoverflow.com/questions/71038065/accessing-equal-earth-projection-with-sf</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>mymap <span class="sc">+</span> <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="st">"+proj=eqearth +datum=WGS84 +wktext"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="geospatial_files/figure-html/unnamed-chunk-7-10.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mymap <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> my_circles_filter, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span> <span class="fu">coord_sf</span>(<span class="at">crs =</span> <span class="st">"+proj=eqearth +datum=WGS84 +wktext"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="geospatial_files/figure-html/unnamed-chunk-7-11.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Write the created files to disk for later use</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write_sf</span>(my_circles_filter, <span class="st">"toy_data.gpkg"</span>,<span class="st">"my_circles_filter"</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_sf</span>(world_countries, <span class="st">"natural_earth.gpkg"</span>, <span class="st">"world"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">write_sf</span>(switzerland, <span class="st">"natural_earth.gpkg"</span>, <span class="st">"switzerland"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># iterate over all projections, and plot it,</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># which takes a long time</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>projinfo <span class="ot">&lt;-</span> <span class="fu">sf_proj_info</span>(<span class="st">"proj"</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>plot_proj <span class="ot">&lt;-</span> <span class="cf">function</span>(proji, desc, <span class="at">plot_it =</span> <span class="cn">TRUE</span>){</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  mymap2 <span class="sc">+</span> </span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_sf</span>(<span class="at">crs =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"+proj={proji}"</span>)) <span class="sc">+</span> </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> stringr<span class="sc">::</span><span class="fu">str_to_title</span>(proji),<span class="at">caption =</span> desc)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(plot_it)<span class="fu">ggsave</span>(<span class="fu">file.path</span>(<span class="st">"projinfo_plots"</span>,glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"{proji}.png"</span>)),<span class="at">scale =</span> <span class="dv">2</span>)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">map2</span>(projinfo<span class="sc">$</span>name, projinfo<span class="sc">$</span>description, \(proji, desc) <span class="fu">tryCatch</span>(<span class="fu">plot_proj</span>(proji, desc),<span class="at">error =</span> <span class="cf">function</span>(e){e}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><img src="projinfo_plots//adams_hemi.png" class="img-fluid"> <img src="projinfo_plots//adams_ws1.png" class="img-fluid"> <img src="projinfo_plots//adams_ws2.png" class="img-fluid"> <img src="projinfo_plots//aea.png" class="img-fluid"> <img src="projinfo_plots//aeqd.png" class="img-fluid"> <img src="projinfo_plots//affine.png" class="img-fluid"> <img src="projinfo_plots//airy.png" class="img-fluid"> <img src="projinfo_plots//aitoff.png" class="img-fluid"> <img src="projinfo_plots//alsk.png" class="img-fluid"> <img src="projinfo_plots//apian.png" class="img-fluid"> <img src="projinfo_plots//august.png" class="img-fluid"> <img src="projinfo_plots//axisswap.png" class="img-fluid"> <img src="projinfo_plots//bacon.png" class="img-fluid"> <img src="projinfo_plots//bertin1953.png" class="img-fluid"> <img src="projinfo_plots//bipc.png" class="img-fluid"> <img src="projinfo_plots//boggs.png" class="img-fluid"> <img src="projinfo_plots//bonne.png" class="img-fluid"> <img src="projinfo_plots//calcofi.png" class="img-fluid"> <img src="projinfo_plots//cart.png" class="img-fluid"> <img src="projinfo_plots//cass.png" class="img-fluid"> <img src="projinfo_plots//cc.png" class="img-fluid"> <img src="projinfo_plots//ccon.png" class="img-fluid"> <img src="projinfo_plots//cea.png" class="img-fluid"> <img src="projinfo_plots//chamb.png" class="img-fluid"> <img src="projinfo_plots//col_urban.png" class="img-fluid"> <img src="projinfo_plots//collg.png" class="img-fluid"> <img src="projinfo_plots//comill.png" class="img-fluid"> <img src="projinfo_plots//crast.png" class="img-fluid"> <img src="projinfo_plots//defmodel.png" class="img-fluid"> <img src="projinfo_plots//deformation.png" class="img-fluid"> <img src="projinfo_plots//denoy.png" class="img-fluid"> <img src="projinfo_plots//eck1.png" class="img-fluid"> <img src="projinfo_plots//eck2.png" class="img-fluid"> <img src="projinfo_plots//eck3.png" class="img-fluid"> <img src="projinfo_plots//eck4.png" class="img-fluid"> <img src="projinfo_plots//eck5.png" class="img-fluid"> <img src="projinfo_plots//eck6.png" class="img-fluid"> <img src="projinfo_plots//eqc.png" class="img-fluid"> <img src="projinfo_plots//eqdc.png" class="img-fluid"> <img src="projinfo_plots//eqearth.png" class="img-fluid"> <img src="projinfo_plots//etmerc.png" class="img-fluid"> <img src="projinfo_plots//euler.png" class="img-fluid"> <img src="projinfo_plots//fahey.png" class="img-fluid"> <img src="projinfo_plots//fouc_s.png" class="img-fluid"> <img src="projinfo_plots//fouc.png" class="img-fluid"> <img src="projinfo_plots//gall.png" class="img-fluid"> <img src="projinfo_plots//geoc.png" class="img-fluid"> <img src="projinfo_plots//geogoffset.png" class="img-fluid"> <img src="projinfo_plots//geos.png" class="img-fluid"> <img src="projinfo_plots//gins8.png" class="img-fluid"> <img src="projinfo_plots//gn_sinu.png" class="img-fluid"> <img src="projinfo_plots//gnom.png" class="img-fluid"> <img src="projinfo_plots//goode.png" class="img-fluid"> <img src="projinfo_plots//gridshift.png" class="img-fluid"> <img src="projinfo_plots//gs48.png" class="img-fluid"> <img src="projinfo_plots//gs50.png" class="img-fluid"> <img src="projinfo_plots//gstmerc.png" class="img-fluid"> <img src="projinfo_plots//guyou.png" class="img-fluid"> <img src="projinfo_plots//hammer.png" class="img-fluid"> <img src="projinfo_plots//hatano.png" class="img-fluid"> <img src="projinfo_plots//healpix.png" class="img-fluid"> <img src="projinfo_plots//helmert.png" class="img-fluid"> <img src="projinfo_plots//hgridshift.png" class="img-fluid"> <img src="projinfo_plots//horner.png" class="img-fluid"> <img src="projinfo_plots//igh_o.png" class="img-fluid"> <img src="projinfo_plots//igh.png" class="img-fluid"> <img src="projinfo_plots//imoll_o.png" class="img-fluid"> <img src="projinfo_plots//imoll.png" class="img-fluid"> <img src="projinfo_plots//imw_p.png" class="img-fluid"> <img src="projinfo_plots//isea.png" class="img-fluid"> <img src="projinfo_plots//kav5.png" class="img-fluid"> <img src="projinfo_plots//kav7.png" class="img-fluid"> <img src="projinfo_plots//krovak.png" class="img-fluid"> <img src="projinfo_plots//labrd.png" class="img-fluid"> <img src="projinfo_plots//laea.png" class="img-fluid"> <img src="projinfo_plots//lagrng.png" class="img-fluid"> <img src="projinfo_plots//larr.png" class="img-fluid"> <img src="projinfo_plots//lask.png" class="img-fluid"> <img src="projinfo_plots//latlon.png" class="img-fluid"> <img src="projinfo_plots//lcc.png" class="img-fluid"> <img src="projinfo_plots//lcca.png" class="img-fluid"> <img src="projinfo_plots//leac.png" class="img-fluid"> <img src="projinfo_plots//lee_os.png" class="img-fluid"> <img src="projinfo_plots//lonlat.png" class="img-fluid"> <img src="projinfo_plots//loxim.png" class="img-fluid"> <img src="projinfo_plots//lsat.png" class="img-fluid"> <img src="projinfo_plots//mbt_fps.png" class="img-fluid"> <img src="projinfo_plots//mbt_s.png" class="img-fluid"> <img src="projinfo_plots//mbtfpp.png" class="img-fluid"> <img src="projinfo_plots//mbtfpq.png" class="img-fluid"> <img src="projinfo_plots//mbtfps.png" class="img-fluid"> <img src="projinfo_plots//merc.png" class="img-fluid"> <img src="projinfo_plots//mil_os.png" class="img-fluid"> <img src="projinfo_plots//mill.png" class="img-fluid"> <img src="projinfo_plots//misrsom.png" class="img-fluid"> <img src="projinfo_plots//mod_krovak.png" class="img-fluid"> <img src="projinfo_plots//moll.png" class="img-fluid"> <img src="projinfo_plots//molobadekas.png" class="img-fluid"> <img src="projinfo_plots//molodensky.png" class="img-fluid"> <img src="projinfo_plots//murd1.png" class="img-fluid"> <img src="projinfo_plots//murd2.png" class="img-fluid"> <img src="projinfo_plots//murd3.png" class="img-fluid"> <img src="projinfo_plots//natearth.png" class="img-fluid"> <img src="projinfo_plots//natearth2.png" class="img-fluid"> <img src="projinfo_plots//nell_h.png" class="img-fluid"> <img src="projinfo_plots//nell.png" class="img-fluid"> <img src="projinfo_plots//nicol.png" class="img-fluid"> <img src="projinfo_plots//noop.png" class="img-fluid"> <img src="projinfo_plots//nsper.png" class="img-fluid"> <img src="projinfo_plots//nzmg.png" class="img-fluid"> <img src="projinfo_plots//ob_tran.png" class="img-fluid"> <img src="projinfo_plots//ocea.png" class="img-fluid"> <img src="projinfo_plots//oea.png" class="img-fluid"> <img src="projinfo_plots//omerc.png" class="img-fluid"> <img src="projinfo_plots//ortel.png" class="img-fluid"> <img src="projinfo_plots//ortho.png" class="img-fluid"> <img src="projinfo_plots//patterson.png" class="img-fluid"> <img src="projinfo_plots//pconic.png" class="img-fluid"> <img src="projinfo_plots//peirce_q.png" class="img-fluid"> <img src="projinfo_plots//pipeline.png" class="img-fluid"> <img src="projinfo_plots//poly.png" class="img-fluid"> <img src="projinfo_plots//pop.png" class="img-fluid"> <img src="projinfo_plots//push.png" class="img-fluid"> <img src="projinfo_plots//putp1.png" class="img-fluid"> <img src="projinfo_plots//putp2.png" class="img-fluid"> <img src="projinfo_plots//putp3.png" class="img-fluid"> <img src="projinfo_plots//putp3p.png" class="img-fluid"> <img src="projinfo_plots//putp4p.png" class="img-fluid"> <img src="projinfo_plots//putp5.png" class="img-fluid"> <img src="projinfo_plots//putp5p.png" class="img-fluid"> <img src="projinfo_plots//putp6.png" class="img-fluid"> <img src="projinfo_plots//putp6p.png" class="img-fluid"> <img src="projinfo_plots//qsc.png" class="img-fluid"> <img src="projinfo_plots//qua_aut.png" class="img-fluid"> <img src="projinfo_plots//rhealpix.png" class="img-fluid"> <img src="projinfo_plots//robin.png" class="img-fluid"> <img src="projinfo_plots//rouss.png" class="img-fluid"> <img src="projinfo_plots//rpoly.png" class="img-fluid"> <img src="projinfo_plots//s2.png" class="img-fluid"> <img src="projinfo_plots//sch.png" class="img-fluid"> <img src="projinfo_plots//set.png" class="img-fluid"> <img src="projinfo_plots//sinu.png" class="img-fluid"> <img src="projinfo_plots//som.png" class="img-fluid"> <img src="projinfo_plots//somerc.png" class="img-fluid"> <img src="projinfo_plots//stere.png" class="img-fluid"> <img src="projinfo_plots//sterea.png" class="img-fluid"> <img src="projinfo_plots//tcc.png" class="img-fluid"> <img src="projinfo_plots//tcea.png" class="img-fluid"> <img src="projinfo_plots//times.png" class="img-fluid"> <img src="projinfo_plots//tinshift.png" class="img-fluid"> <img src="projinfo_plots//tissot.png" class="img-fluid"> <img src="projinfo_plots//tmerc.png" class="img-fluid"> <img src="projinfo_plots//tobmerc.png" class="img-fluid"> <img src="projinfo_plots//topocentric.png" class="img-fluid"> <img src="projinfo_plots//tpeqd.png" class="img-fluid"> <img src="projinfo_plots//tpers.png" class="img-fluid"> <img src="projinfo_plots//unitconvert.png" class="img-fluid"> <img src="projinfo_plots//ups.png" class="img-fluid"> <img src="projinfo_plots//urm5.png" class="img-fluid"> <img src="projinfo_plots//urmfps.png" class="img-fluid"> <img src="projinfo_plots//utm.png" class="img-fluid"> <img src="projinfo_plots//vandg.png" class="img-fluid"> <img src="projinfo_plots//vandg2.png" class="img-fluid"> <img src="projinfo_plots//vandg3.png" class="img-fluid"> <img src="projinfo_plots//vandg4.png" class="img-fluid"> <img src="projinfo_plots//vertoffset.png" class="img-fluid"> <img src="projinfo_plots//vgridshift.png" class="img-fluid"> <img src="projinfo_plots//vitk1.png" class="img-fluid"> <img src="projinfo_plots//wag1.png" class="img-fluid"> <img src="projinfo_plots//wag2.png" class="img-fluid"> <img src="projinfo_plots//wag3.png" class="img-fluid"> <img src="projinfo_plots//wag4.png" class="img-fluid"> <img src="projinfo_plots//wag5.png" class="img-fluid"> <img src="projinfo_plots//wag6.png" class="img-fluid"> <img src="projinfo_plots//wag7.png" class="img-fluid"> <img src="projinfo_plots//webmerc.png" class="img-fluid"> <img src="projinfo_plots//weren.png" class="img-fluid"> <img src="projinfo_plots//wink1.png" class="img-fluid"> <img src="projinfo_plots//wink2.png" class="img-fluid"> <img src="projinfo_plots//wintri.png" class="img-fluid"> <img src="projinfo_plots//xyzgridshift.png" class="img-fluid"></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./r-spatial.html" class="pagination-link" aria-label="R Spatial">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R Spatial</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./ggplot.html" class="pagination-link" aria-label="Ggplot">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ggplot</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

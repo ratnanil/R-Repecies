@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.19">
+<meta name="generator" content="quarto-1.9.11">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./ggplot.html" rel="next">
+<link href="./geospatial.html" rel="next">
 <link href="./base-R.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -74,10 +74,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-46eeb4c476de49ef7df495821a6125d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-a5dfee7ccc7f20503a6465e15a2cff9c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d9c77dfe7a0221f9a51a4f8aebee4486.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1b94657bcec7f050019a58791b04895b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -131,9 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="./index.html" class="sidebar-logo-link">
-      </a>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">R-Tricks</a> 
     </div>
@@ -165,14 +163,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./geospatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Geospatial</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./ggplot.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ggplot</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ggplot</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./rstudio.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">RStudio</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">RStudio</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./swisstopo-api.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Swisstopo API</span></span></a>
   </div>
 </li>
     </ul>
@@ -185,28 +195,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#default-startup-options" id="toc-default-startup-options" class="nav-link active" data-scroll-target="#default-startup-options"><span class="header-section-number">2.0.1</span> Default startup options</a></li>
-  <li><a href="#set-relation_to_geometry-attribute-of-an-sf-object" id="toc-set-relation_to_geometry-attribute-of-an-sf-object" class="nav-link" data-scroll-target="#set-relation_to_geometry-attribute-of-an-sf-object"><span class="header-section-number">2.1</span> Set relation_to_geometry attribute of an sf object</a>
+  <li><a href="#default-startup-options" id="toc-default-startup-options" class="nav-link active" data-scroll-target="#default-startup-options"><span class="header-section-number">2.1</span> Default startup options</a></li>
+  <li><a href="#set-relation_to_geometry-attribute-of-an-sf-object" id="toc-set-relation_to_geometry-attribute-of-an-sf-object" class="nav-link" data-scroll-target="#set-relation_to_geometry-attribute-of-an-sf-object"><span class="header-section-number">2.2</span> Set relation_to_geometry attribute of an sf object</a></li>
+  <li><a href="#misc" id="toc-misc" class="nav-link" data-scroll-target="#misc"><span class="header-section-number">2.3</span> Misc</a></li>
+  <li><a href="#get-the-negative-of-a-polygon" id="toc-get-the-negative-of-a-polygon" class="nav-link" data-scroll-target="#get-the-negative-of-a-polygon"><span class="header-section-number">2.4</span> Get the “negative” of a polygon</a></li>
+  <li><a href="#bounding-box-to-polygon" id="toc-bounding-box-to-polygon" class="nav-link" data-scroll-target="#bounding-box-to-polygon"><span class="header-section-number">2.5</span> Bounding box to polygon</a>
   <ul class="collapse">
-  <li><a href="#misc" id="toc-misc" class="nav-link" data-scroll-target="#misc"><span class="header-section-number">2.1.1</span> Misc</a></li>
-  <li><a href="#get-the-negative-of-a-polygon" id="toc-get-the-negative-of-a-polygon" class="nav-link" data-scroll-target="#get-the-negative-of-a-polygon"><span class="header-section-number">2.1.2</span> Get the “negative” of a polygon</a></li>
-  <li><a href="#bounding-box-to-polygon" id="toc-bounding-box-to-polygon" class="nav-link" data-scroll-target="#bounding-box-to-polygon"><span class="header-section-number">2.1.3</span> Bounding box to polygon</a></li>
-  <li><a href="#case-3-expanding-the-bounding-box" id="toc-case-3-expanding-the-bounding-box" class="nav-link" data-scroll-target="#case-3-expanding-the-bounding-box"><span class="header-section-number">2.1.4</span> Case 3 (Expanding the bounding box)</a></li>
-  <li><a href="#sfs-example-datasets" id="toc-sfs-example-datasets" class="nav-link" data-scroll-target="#sfs-example-datasets"><span class="header-section-number">2.1.5</span> sf’s example datasets</a></li>
-  <li><a href="#country-borders" id="toc-country-borders" class="nav-link" data-scroll-target="#country-borders"><span class="header-section-number">2.1.6</span> Country Borders</a></li>
-  <li><a href="#erase" id="toc-erase" class="nav-link" data-scroll-target="#erase"><span class="header-section-number">2.1.7</span> Erase</a></li>
-  <li><a href="#cast-point-to-linestring" id="toc-cast-point-to-linestring" class="nav-link" data-scroll-target="#cast-point-to-linestring"><span class="header-section-number">2.1.8</span> Cast POINT to LINESTRING</a></li>
-  <li><a href="#creating-simple-feature-geometries" id="toc-creating-simple-feature-geometries" class="nav-link" data-scroll-target="#creating-simple-feature-geometries"><span class="header-section-number">2.1.9</span> Creating Simple Feature Geometries</a></li>
-  <li><a href="#working-with-a-list-of-layers" id="toc-working-with-a-list-of-layers" class="nav-link" data-scroll-target="#working-with-a-list-of-layers"><span class="header-section-number">2.1.10</span> Working with a list of layers</a></li>
-  <li><a href="#tmap-v4" id="toc-tmap-v4" class="nav-link" data-scroll-target="#tmap-v4"><span class="header-section-number">2.1.11</span> Tmap V4</a></li>
-  <li><a href="#download-swissalti3d-tiles-with-custom-extent" id="toc-download-swissalti3d-tiles-with-custom-extent" class="nav-link" data-scroll-target="#download-swissalti3d-tiles-with-custom-extent"><span class="header-section-number">2.1.12</span> Download swissAlti3D tiles with custom extent</a></li>
-  <li><a href="#map-matching" id="toc-map-matching" class="nav-link" data-scroll-target="#map-matching"><span class="header-section-number">2.1.13</span> Map Matching</a></li>
-  <li><a href="#data.frame-method-for-sf_layers-object" id="toc-data.frame-method-for-sf_layers-object" class="nav-link" data-scroll-target="#data.frame-method-for-sf_layers-object"><span class="header-section-number">2.1.14</span> <code>data.frame</code> method for <code>sf_layers</code>-object</a></li>
+  <li><a href="#case-1" id="toc-case-1" class="nav-link" data-scroll-target="#case-1"><span class="header-section-number">2.5.1</span> Case 1</a></li>
+  <li><a href="#case-2" id="toc-case-2" class="nav-link" data-scroll-target="#case-2"><span class="header-section-number">2.5.2</span> Case 2</a></li>
+  <li><a href="#case-3-expanding-the-bounding-box" id="toc-case-3-expanding-the-bounding-box" class="nav-link" data-scroll-target="#case-3-expanding-the-bounding-box"><span class="header-section-number">2.5.3</span> Case 3 (Expanding the bounding box)</a></li>
   </ul></li>
-  <li><a href="#terra" id="toc-terra" class="nav-link" data-scroll-target="#terra"><span class="header-section-number">2.2</span> terra</a>
+  <li><a href="#terra-ext-to-sf-polygon" id="toc-terra-ext-to-sf-polygon" class="nav-link" data-scroll-target="#terra-ext-to-sf-polygon"><span class="header-section-number">2.6</span> Terra ext to sf Polygon</a></li>
+  <li><a href="#sfs-example-datasets" id="toc-sfs-example-datasets" class="nav-link" data-scroll-target="#sfs-example-datasets"><span class="header-section-number">2.7</span> sf’s example datasets</a></li>
+  <li><a href="#country-borders" id="toc-country-borders" class="nav-link" data-scroll-target="#country-borders"><span class="header-section-number">2.8</span> Country Borders</a></li>
+  <li><a href="#erase" id="toc-erase" class="nav-link" data-scroll-target="#erase"><span class="header-section-number">2.9</span> Erase</a></li>
+  <li><a href="#cast-point-to-linestring" id="toc-cast-point-to-linestring" class="nav-link" data-scroll-target="#cast-point-to-linestring"><span class="header-section-number">2.10</span> Cast POINT to LINESTRING</a></li>
+  <li><a href="#creating-simple-feature-geometries" id="toc-creating-simple-feature-geometries" class="nav-link" data-scroll-target="#creating-simple-feature-geometries"><span class="header-section-number">2.11</span> Creating Simple Feature Geometries</a>
   <ul class="collapse">
-  <li><a href="#datatypes" id="toc-datatypes" class="nav-link" data-scroll-target="#datatypes"><span class="header-section-number">2.2.1</span> Datatypes</a></li>
-  <li><a href="#rasterize-a-vector-dataset" id="toc-rasterize-a-vector-dataset" class="nav-link" data-scroll-target="#rasterize-a-vector-dataset"><span class="header-section-number">2.2.2</span> Rasterize a vector dataset</a></li>
+  <li><a href="#from-simple-vectors" id="toc-from-simple-vectors" class="nav-link" data-scroll-target="#from-simple-vectors"><span class="header-section-number">2.11.1</span> From simple vectors</a></li>
+  <li><a href="#from-data.frame-columns" id="toc-from-data.frame-columns" class="nav-link" data-scroll-target="#from-data.frame-columns"><span class="header-section-number">2.11.2</span> from <code>data.frame</code> columns</a></li>
+  </ul></li>
+  <li><a href="#working-with-a-list-of-layers" id="toc-working-with-a-list-of-layers" class="nav-link" data-scroll-target="#working-with-a-list-of-layers"><span class="header-section-number">2.12</span> Working with a list of layers</a></li>
+  <li><a href="#tmap-v4" id="toc-tmap-v4" class="nav-link" data-scroll-target="#tmap-v4"><span class="header-section-number">2.13</span> Tmap V4</a></li>
+  <li><a href="#download-swissalti3d-tiles-with-custom-extent" id="toc-download-swissalti3d-tiles-with-custom-extent" class="nav-link" data-scroll-target="#download-swissalti3d-tiles-with-custom-extent"><span class="header-section-number">2.14</span> Download swissAlti3D tiles with custom extent</a></li>
+  <li><a href="#map-matching" id="toc-map-matching" class="nav-link" data-scroll-target="#map-matching"><span class="header-section-number">2.15</span> Map Matching</a>
+  <ul class="collapse">
+  <li><a href="#data.frame-method-for-sf_layers-object" id="toc-data.frame-method-for-sf_layers-object" class="nav-link" data-scroll-target="#data.frame-method-for-sf_layers-object"><span class="header-section-number">2.15.1</span> <code>data.frame</code> method for <code>sf_layers</code>-object</a></li>
+  </ul></li>
+  <li><a href="#terra" id="toc-terra" class="nav-link" data-scroll-target="#terra"><span class="header-section-number">2.16</span> terra</a>
+  <ul class="collapse">
+  <li><a href="#datatypes" id="toc-datatypes" class="nav-link" data-scroll-target="#datatypes"><span class="header-section-number">2.16.1</span> Datatypes</a></li>
+  <li><a href="#rasterize-a-vector-dataset" id="toc-rasterize-a-vector-dataset" class="nav-link" data-scroll-target="#rasterize-a-vector-dataset"><span class="header-section-number">2.16.2</span> Rasterize a vector dataset</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -234,26 +253,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="default-startup-options" class="level3" data-number="2.0.1">
-<h3 data-number="2.0.1" class="anchored" data-anchor-id="default-startup-options"><span class="header-section-number">2.0.1</span> Default startup options</h3>
+<section id="default-startup-options" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="default-startup-options"><span class="header-section-number">2.1</span> Default startup options</h2>
 <p>These options could be included in rprofile or the like:</p>
 <pre><code>options(sf_max.plot = 1)   # only plots the first column of sf objects
     if(require(tmap))tmap_options(basemaps = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png") # only uses openstreetmap for the default basemap</code></pre>
 </section>
-<section id="set-relation_to_geometry-attribute-of-an-sf-object" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="set-relation_to_geometry-attribute-of-an-sf-object"><span class="header-section-number">2.1</span> Set relation_to_geometry attribute of an sf object</h2>
+<section id="set-relation_to_geometry-attribute-of-an-sf-object" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="set-relation_to_geometry-attribute-of-an-sf-object"><span class="header-section-number">2.2</span> Set relation_to_geometry attribute of an sf object</h2>
 <pre><code>attribute variables are assumed to be spatially constant throughout all geometries</code></pre>
 <p>like so:</p>
 <pre><code>st_agr(x) = "constant"
 st_agr(y) = "constant"</code></pre>
-<section id="misc" class="level3" data-number="2.1.1">
-<h3 data-number="2.1.1" class="anchored" data-anchor-id="misc"><span class="header-section-number">2.1.1</span> Misc</h3>
+</section>
+<section id="misc" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="misc"><span class="header-section-number">2.3</span> Misc</h2>
 <ul>
 <li>get linked software versions: <code>sf::sf_extSoftVersion()</code></li>
 </ul>
 </section>
-<section id="get-the-negative-of-a-polygon" class="level3" data-number="2.1.2">
-<h3 data-number="2.1.2" class="anchored" data-anchor-id="get-the-negative-of-a-polygon"><span class="header-section-number">2.1.2</span> Get the “negative” of a polygon</h3>
+<section id="get-the-negative-of-a-polygon" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="get-the-negative-of-a-polygon"><span class="header-section-number">2.4</span> Get the “negative” of a polygon</h2>
 <p>I usually want this for visualisation purposes</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>st_negative <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">dist =</span> <span class="dv">0</span>){</span>
@@ -264,14 +284,11 @@ st_agr(y) = "constant"</code></pre>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Linking to GEOS 3.12.2, GDAL 3.11.3, PROJ 9.4.1; sf_use_s2() is TRUE</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>nc <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"shape/nc.shp"</span>,<span class="at">package=</span><span class="st">"sf"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_union</span>()</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>nc <span class="sc">|&gt;</span> <span class="fu">st_geometry</span>() <span class="sc">|&gt;</span>  <span class="fu">plot</span>(<span class="at">col =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>nc <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"shape/nc.shp"</span>,<span class="at">package=</span><span class="st">"sf"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_union</span>()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>nc <span class="sc">|&gt;</span> <span class="fu">st_geometry</span>() <span class="sc">|&gt;</span>  <span class="fu">plot</span>(<span class="at">col =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -279,7 +296,7 @@ st_agr(y) = "constant"</code></pre>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_negative</span>(nc, <span class="dv">0</span>) <span class="sc">|&gt;</span> <span class="fu">st_geometry</span>() <span class="sc">|&gt;</span>  <span class="fu">plot</span>(<span class="at">col =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_negative</span>(nc, <span class="dv">0</span>) <span class="sc">|&gt;</span> <span class="fu">st_geometry</span>() <span class="sc">|&gt;</span>  <span class="fu">plot</span>(<span class="at">col =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -289,44 +306,39 @@ st_agr(y) = "constant"</code></pre>
 </div>
 </div>
 </section>
-<section id="bounding-box-to-polygon" class="level3" data-number="2.1.3">
-<h3 data-number="2.1.3" class="anchored" data-anchor-id="bounding-box-to-polygon"><span class="header-section-number">2.1.3</span> Bounding box to polygon</h3>
-<section id="case-1" class="level4" data-number="2.1.3.1">
-<h4 data-number="2.1.3.1" class="anchored" data-anchor-id="case-1"><span class="header-section-number">2.1.3.1</span> Case 1</h4>
+<section id="bounding-box-to-polygon" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="bounding-box-to-polygon"><span class="header-section-number">2.5</span> Bounding box to polygon</h2>
+<section id="case-1" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="case-1"><span class="header-section-number">2.5.1</span> Case 1</h3>
 <p>Assuming you have a bounding box as four numeric values, xmin, ymin, xmax, ymax.</p>
 <p>The following function will turn this into a polygon:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>llur2poly <span class="ot">&lt;-</span> <span class="cf">function</span>(xmin, ymin, xmax, ymax){</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sapply</span>(\(x)<span class="fu">c</span>(xmin, ymin, xmax, ymax)[x]) <span class="sc">|&gt;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">matrix</span>(<span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_polygon</span>()</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>llur2poly <span class="ot">&lt;-</span> <span class="cf">function</span>(xmin, ymin, xmax, ymax){</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sapply</span>(\(x)<span class="fu">c</span>(xmin, ymin, xmax, ymax)[x]) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">matrix</span>(<span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_polygon</span>()</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>or so:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>llur2poly <span class="ot">&lt;-</span> \(xmin,ymin,xmax,ymax, <span class="at">crs =</span> <span class="dv">2056</span>){</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">browser</span>()</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_bbox</span>(<span class="fu">c</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">xmin =</span> xmin,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">xmax =</span> xmax,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">ymin =</span> ymin,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">ymax =</span> ymax</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sfc</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_set_crs</span>(crs)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>llur2poly <span class="ot">&lt;-</span> \(xmin,ymin,xmax,ymax, <span class="at">crs =</span> <span class="dv">2056</span>){</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">browser</span>()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_bbox</span>(<span class="fu">c</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">xmin =</span> xmin,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">xmax =</span> xmax,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">ymin =</span> ymin,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">ymax =</span> ymax</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sfc</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_set_crs</span>(crs)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="case-2" class="level4" data-number="2.1.3.2">
-<h4 data-number="2.1.3.2" class="anchored" data-anchor-id="case-2"><span class="header-section-number">2.1.3.2</span> Case 2</h4>
+<section id="case-2" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="case-2"><span class="header-section-number">2.5.2</span> Case 2</h3>
 <p>assuming you have an object named <code>towns</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_as_sfc</span>(<span class="fu">st_bbox</span>(towns))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_as_sfc</span>(<span class="fu">st_bbox</span>(towns))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="terra-ext-to-sf-polygon" class="level4" data-number="2.1.3.3">
-<h4 data-number="2.1.3.3" class="anchored" data-anchor-id="terra-ext-to-sf-polygon"><span class="header-section-number">2.1.3.3</span> Terra ext to sf Polygon</h4>
-<pre><code>ext(rastobj) |&gt; vect() |&gt; as("Spatial") |&gt; st_as_sfc()</code></pre>
-</section>
-</section>
-<section id="case-3-expanding-the-bounding-box" class="level3" data-number="2.1.4">
-<h3 data-number="2.1.4" class="anchored" data-anchor-id="case-3-expanding-the-bounding-box"><span class="header-section-number">2.1.4</span> Case 3 (Expanding the bounding box)</h3>
+<section id="case-3-expanding-the-bounding-box" class="level3" data-number="2.5.3">
+<h3 data-number="2.5.3" class="anchored" data-anchor-id="case-3-expanding-the-bounding-box"><span class="header-section-number">2.5.3</span> Case 3 (Expanding the bounding box)</h3>
 <p>See <a href="https://github.com/r-spatial/sf/issues/572#issuecomment-1401653103">my comment on this topic</a>:</p>
 <pre><code>nc &lt;- read_sf(system.file("shape/nc.shp",package="sf")) 
 
@@ -341,31 +353,36 @@ rbind(b,b3) |&gt; st_sfc() |&gt; plot()</code></pre>
 </figure>
 </div>
 </section>
-<section id="sfs-example-datasets" class="level3" data-number="2.1.5">
-<h3 data-number="2.1.5" class="anchored" data-anchor-id="sfs-example-datasets"><span class="header-section-number">2.1.5</span> sf’s example datasets</h3>
+</section>
+<section id="terra-ext-to-sf-polygon" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="terra-ext-to-sf-polygon"><span class="header-section-number">2.6</span> Terra ext to sf Polygon</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ext</span>(rastobj) <span class="sc">|&gt;</span> <span class="fu">vect</span>() <span class="sc">|&gt;</span> <span class="fu">as</span>(<span class="st">"Spatial"</span>) <span class="sc">|&gt;</span> <span class="fu">st_as_sfc</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="sfs-example-datasets" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="sfs-example-datasets"><span class="header-section-number">2.7</span> sf’s example datasets</h2>
 <p>I’m always wondering what spatial vector example data is provided by the <code>sf</code> package. This is how you find out:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>sfs_sys_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="at">package=</span><span class="st">"sf"</span>)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">file =</span> <span class="fu">list.files</span>(sfs_sys_path,<span class="st">"shp$|sqlite$|gpkg$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>files <span class="sc">|&gt;</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract</span>(file, <span class="st">"extension"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.(.+)$"</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">layers =</span> <span class="fu">map</span>(file, \(x) (<span class="fu">st_layers</span>(<span class="fu">file.path</span>(sfs_sys_path, x)))),</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  ) </span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co"># this no longer works... fix this at some point!</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># (it would be nice if sf's print method for st_layers were available as a df</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="co"># currently, the crs column is problematic)</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>files<span class="sc">$</span>crs <span class="ot">&lt;-</span> <span class="fu">map_chr</span>(files<span class="sc">$</span>crs, \(x)x[[<span class="dv">1</span>]]<span class="sc">$</span>input)</span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(files)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>sfs_sys_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="at">package=</span><span class="st">"sf"</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">file =</span> <span class="fu">list.files</span>(sfs_sys_path,<span class="st">"shp$|sqlite$|gpkg$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>files <span class="sc">|&gt;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract</span>(file, <span class="st">"extension"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">.(.+)$"</span>, <span class="at">remove =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">layers =</span> <span class="fu">map</span>(file, \(x) (<span class="fu">st_layers</span>(<span class="fu">file.path</span>(sfs_sys_path, x)))),</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co"># this no longer works... fix this at some point!</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co"># (it would be nice if sf's print method for st_layers were available as a df</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co"># currently, the crs column is problematic)</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>files<span class="sc">$</span>crs <span class="ot">&lt;-</span> <span class="fu">map_chr</span>(files<span class="sc">$</span>crs, \(x)x[[<span class="dv">1</span>]]<span class="sc">$</span>input)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(files)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 22%">
@@ -564,12 +581,7 @@ rbind(b,b3) |&gt; st_sfc() |&gt; plot()</code></pre>
 </table>
 <p>To import a file</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"sqlite/test3.sqlite"</span>,<span class="at">package=</span><span class="st">"sf"</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in CPL_read_ogr(dsn, layer, query, as.character(options), quiet, :
-automatically selected the first layer in a data source containing more than
-one.</code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"sqlite/test3.sqlite"</span>,<span class="at">package=</span><span class="st">"sf"</span>)) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 8101 features and 5 fields
 Geometry type: POINT
@@ -591,7 +603,7 @@ Projected CRS: WGS 84 / UTM zone 32N
 10 Martiniana Po          667          1      0      0 (370131.2 4942846)
 # ℹ 8,091 more rows</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"sqlite/test3.sqlite"</span>,<span class="at">package=</span><span class="st">"sf"</span>), <span class="st">"Towns"</span>) <span class="co"># more specific</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"sqlite/test3.sqlite"</span>,<span class="at">package=</span><span class="st">"sf"</span>), <span class="st">"Towns"</span>) <span class="co"># more specific</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 8101 features and 5 fields
 Geometry type: POINT
@@ -615,14 +627,14 @@ Projected CRS: WGS 84 / UTM zone 32N
 </div>
 </div>
 </section>
-<section id="country-borders" class="level3" data-number="2.1.6">
-<h3 data-number="2.1.6" class="anchored" data-anchor-id="country-borders"><span class="header-section-number">2.1.6</span> Country Borders</h3>
+<section id="country-borders" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="country-borders"><span class="header-section-number">2.8</span> Country Borders</h2>
 <p>RNaturalEarth has many worldwide datasets to use:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>southamerica <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">returnclass=</span><span class="st">"sf"</span>, <span class="at">continent =</span> <span class="st">"South America"</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(southamerica[<span class="st">"admin"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>southamerica <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">returnclass=</span><span class="st">"sf"</span>, <span class="at">continent =</span> <span class="st">"South America"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(southamerica[<span class="st">"admin"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -638,21 +650,21 @@ Projected CRS: WGS 84 / UTM zone 32N
 </figure>
 </div>
 </section>
-<section id="erase" class="level3" data-number="2.1.7">
-<h3 data-number="2.1.7" class="anchored" data-anchor-id="erase"><span class="header-section-number">2.1.7</span> Erase</h3>
+<section id="erase" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="erase"><span class="header-section-number">2.9</span> Erase</h2>
 <p>https://github.com/r-spatial/sf/issues/346#issuecomment-302046063</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>st_erase <span class="ot">=</span> <span class="cf">function</span>(x, y) <span class="fu">st_difference</span>(x, <span class="fu">st_union</span>(<span class="fu">st_combine</span>(y)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>st_erase <span class="ot">=</span> <span class="cf">function</span>(x, y) <span class="fu">st_difference</span>(x, <span class="fu">st_union</span>(<span class="fu">st_combine</span>(y)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="cast-point-to-linestring" class="level3" data-number="2.1.8">
-<h3 data-number="2.1.8" class="anchored" data-anchor-id="cast-point-to-linestring"><span class="header-section-number">2.1.8</span> Cast POINT to LINESTRING</h3>
+<section id="cast-point-to-linestring" class="level2" data-number="2.10">
+<h2 data-number="2.10" class="anchored" data-anchor-id="cast-point-to-linestring"><span class="header-section-number">2.10</span> Cast POINT to LINESTRING</h2>
 <p>When casting points to linestring with <code>group_by() |&gt; summarise() |&gt; st_cast("LINESTRING")</code> I need to pass the option <code>do_union = FALSE</code> to <code>summarise()</code>, otherwise the order of the points is not preserved (see <a href="https://github.com/r-spatial/sf/issues/692">my GitHub issue</a> on this).</p>
 </section>
-<section id="creating-simple-feature-geometries" class="level3" data-number="2.1.9">
-<h3 data-number="2.1.9" class="anchored" data-anchor-id="creating-simple-feature-geometries"><span class="header-section-number">2.1.9</span> Creating Simple Feature Geometries</h3>
-<section id="from-simple-vectors" class="level4" data-number="2.1.9.1">
-<h4 data-number="2.1.9.1" class="anchored" data-anchor-id="from-simple-vectors"><span class="header-section-number">2.1.9.1</span> From simple vectors</h4>
+<section id="creating-simple-feature-geometries" class="level2" data-number="2.11">
+<h2 data-number="2.11" class="anchored" data-anchor-id="creating-simple-feature-geometries"><span class="header-section-number">2.11</span> Creating Simple Feature Geometries</h2>
+<section id="from-simple-vectors" class="level3" data-number="2.11.1">
+<h3 data-number="2.11.1" class="anchored" data-anchor-id="from-simple-vectors"><span class="header-section-number">2.11.1</span> From simple vectors</h3>
 <p>From time to time, I need to create simple feature geometries out of thin air. Each type of simple feature requires a specific data type. They could be inferred (since they make a lot of sense) but I’m lazy, hence the documentation here:</p>
 <p>Todo:</p>
 <ul class="task-list">
@@ -661,108 +673,92 @@ Projected CRS: WGS 84 / UTM zone 32N
 <li><label><input type="checkbox">add multipolygon example</label></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_point</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>POINT (0 0)</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_multipoint</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>MULTIPOINT ((0 0), (1 1))</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_linestring</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>LINESTRING (0 0, 1 1)</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_multilinestring</span>(</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>MULTILINESTRING ((0 0, 1 1), (0 1, 1 0))</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_polygon</span>(</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>            <span class="co"># OGC Simple feature: exterior ring is counter clockwise</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span>,</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>                <span class="dv">1</span>, <span class="dv">0</span>,</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>                <span class="dv">1</span>, <span class="dv">1</span>,</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">1</span>,</span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span></span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>            ),</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0))</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_polygon</span>(</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span>,</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>                <span class="dv">1</span>, <span class="dv">0</span>,</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>                <span class="dv">1</span>, <span class="dv">1</span>,</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">1</span>,</span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>            ),</span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># OGC Simple feature: interior ring is clockwise</span></span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(</span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(</span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.25</span>,<span class="fl">0.25</span>,</span>
-<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.25</span>,<span class="fl">0.75</span>,</span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.75</span>,<span class="fl">0.75</span>,</span>
-<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.75</span>,<span class="fl">0.25</span>,</span>
-<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.25</span>,<span class="fl">0.25</span></span>
-<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>            ),</span>
-<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
-<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>POLYGON ((0 0, 1 0, 1 1, 0 1, 0 0), (0.25 0.25, 0.25 0.75, 0.75 0.75, 0.75 0.25, 0.25 0.25))</code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_point</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_multipoint</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">st_linestring</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">st_multilinestring</span>(</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="fu">st_polygon</span>(</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>            <span class="co"># OGC Simple feature: exterior ring is counter clockwise</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>                <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>                <span class="dv">1</span>, <span class="dv">1</span>,</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">1</span>,</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>) </span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="fu">st_polygon</span>(</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>                <span class="dv">1</span>, <span class="dv">0</span>,</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>                <span class="dv">1</span>, <span class="dv">1</span>,</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">1</span>,</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>                <span class="dv">0</span>, <span class="dv">0</span></span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># OGC Simple feature: interior ring is clockwise</span></span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>        <span class="fu">matrix</span>(</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>            <span class="fu">c</span>(</span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.25</span>,<span class="fl">0.25</span>,</span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.25</span>,<span class="fl">0.75</span>,</span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.75</span>,<span class="fl">0.75</span>,</span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.75</span>,<span class="fl">0.25</span>,</span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a>                <span class="fl">0.25</span>,<span class="fl">0.25</span></span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a>            ),</span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a>            <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="from-data.frame-columns" class="level4" data-number="2.1.9.2">
-<h4 data-number="2.1.9.2" class="anchored" data-anchor-id="from-data.frame-columns"><span class="header-section-number">2.1.9.2</span> from <code>data.frame</code> columns</h4>
+<section id="from-data.frame-columns" class="level3" data-number="2.11.2">
+<h3 data-number="2.11.2" class="anchored" data-anchor-id="from-data.frame-columns"><span class="header-section-number">2.11.2</span> from <code>data.frame</code> columns</h3>
 <p>Sometimes recive geodata stored in columns of a <code>data.frame</code>. Mostly, these are point objects, which can be converted to a geometry using the following code:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># note the order: lon - lat, which is x, y ! </span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>,<span class="st">"lat"</span>),<span class="at">crs =</span> <span class="dv">4326</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># note the order: lon - lat, which is x, y ! </span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"lon"</span>,<span class="st">"lat"</span>),<span class="at">crs =</span> <span class="dv">4326</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Rarely, they are lines (tipically origin - destination):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">geom =</span> <span class="fu">pmap</span>(<span class="fu">list</span>(start_lon,start_lat, end_lon,end_lat), \(x1, y1, x2, y2) <span class="fu">st_linestring</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(x1, y1, x2, y2), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>))))  <span class="sc">|&gt;</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_sf</span>(<span class="at">crs =</span> <span class="dv">4326</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">geom =</span> <span class="fu">pmap</span>(<span class="fu">list</span>(start_lon,start_lat, end_lon,end_lat), \(x1, y1, x2, y2) <span class="fu">st_linestring</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(x1, y1, x2, y2), <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>))))  <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">st_sf</span>(<span class="at">crs =</span> <span class="dv">4326</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
-<section id="working-with-a-list-of-layers" class="level3" data-number="2.1.10">
-<h3 data-number="2.1.10" class="anchored" data-anchor-id="working-with-a-list-of-layers"><span class="header-section-number">2.1.10</span> Working with a list of layers</h3>
+<section id="working-with-a-list-of-layers" class="level2" data-number="2.12">
+<h2 data-number="2.12" class="anchored" data-anchor-id="working-with-a-list-of-layers"><span class="header-section-number">2.12</span> Working with a list of layers</h2>
 <p>Both <code>ggplot2</code> and <code>tmap</code> work with the layers and <code>+</code> idiom. Using functional programming I can create a list of layers and concatenate them all with <code>Reduce</code>. This is a practical method when, e.g.&nbsp;I have a single sf object but want to selectively activate / deactivate parts of that layer in <code>tmap</code>. To do this, I split the sf object into a list of obects, create a tmap layer for each object and then concatenate them as described. E.g. take the <code>buildings</code> dataset from the <code>sf</code> package.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>buildings <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"gpkg/buildings.gpkg"</span>,<span class="at">package=</span><span class="st">"sf"</span>))</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="co"># say we want to selectively activate / deactivate a column named `cat_fac`</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>buildings<span class="sc">$</span>cat_fac <span class="ot">&lt;-</span> <span class="fu">cut</span>(buildings<span class="sc">$</span>cat, <span class="fu">seq</span>(<span class="dv">0</span>,<span class="fu">ceiling</span>(<span class="fu">max</span>(buildings<span class="sc">$</span>cat)<span class="sc">/</span><span class="dv">20</span>)<span class="sc">*</span><span class="dv">20</span>,<span class="dv">20</span>))</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="co"># this is how it looks</span></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(buildings) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> cat_fac))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>buildings <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"gpkg/buildings.gpkg"</span>,<span class="at">package=</span><span class="st">"sf"</span>))</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># say we want to selectively activate / deactivate a column named `cat_fac`</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>buildings<span class="sc">$</span>cat_fac <span class="ot">&lt;-</span> <span class="fu">cut</span>(buildings<span class="sc">$</span>cat, <span class="fu">seq</span>(<span class="dv">0</span>,<span class="fu">ceiling</span>(<span class="fu">max</span>(buildings<span class="sc">$</span>cat)<span class="sc">/</span><span class="dv">20</span>)<span class="sc">*</span><span class="dv">20</span>,<span class="dv">20</span>))</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># this is how it looks</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(buildings) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> cat_fac))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/12532091/218038569-0c296878-4eb9-43e0-b4c4-1683f3812b93.png" class="img-fluid figure-img"></p>
 <figcaption>image</figcaption>
 </figure>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>buildings <span class="sc">|&gt;</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    (\(x)<span class="fu">split</span>(x, x<span class="sc">$</span>cat_fac))() <span class="sc">|&gt;</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">imap</span>(\(x,y)<span class="fu">tm_shape</span>(x,<span class="at">name =</span> y) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"red"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Reduce</span>(<span class="st">"+"</span>, <span class="at">x =</span> _)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>buildings <span class="sc">|&gt;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    (\(x)<span class="fu">split</span>(x, x<span class="sc">$</span>cat_fac))() <span class="sc">|&gt;</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">imap</span>(\(x,y)<span class="fu">tm_shape</span>(x,<span class="at">name =</span> y) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"red"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Reduce</span>(<span class="st">"+"</span>, <span class="at">x =</span> _)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://user-images.githubusercontent.com/12532091/218038922-fd2aa74b-2d14-44e7-b67c-fd1967c9a022.png" class="img-fluid figure-img"></p>
@@ -770,47 +766,47 @@ Projected CRS: WGS 84 / UTM zone 32N
 </figure>
 </div>
 </section>
-<section id="tmap-v4" class="level3" data-number="2.1.11">
-<h3 data-number="2.1.11" class="anchored" data-anchor-id="tmap-v4"><span class="header-section-number">2.1.11</span> Tmap V4</h3>
+<section id="tmap-v4" class="level2" data-number="2.13">
+<h2 data-number="2.13" class="anchored" data-anchor-id="tmap-v4"><span class="header-section-number">2.13</span> Tmap V4</h2>
 <p>The new API takes a bit getting used to. Here is how to change the color palette to Spectral:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(myrast) <span class="sc">+</span> </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">col.scale =</span> <span class="fu">tm_scale_continuous</span>(<span class="at">values =</span> cols4all<span class="sc">::</span><span class="fu">c4a</span>(<span class="at">palette =</span> <span class="st">"-Spectral"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(myrast) <span class="sc">+</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_raster</span>(<span class="at">col.scale =</span> <span class="fu">tm_scale_continuous</span>(<span class="at">values =</span> cols4all<span class="sc">::</span><span class="fu">c4a</span>(<span class="at">palette =</span> <span class="st">"-Spectral"</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="download-swissalti3d-tiles-with-custom-extent" class="level3" data-number="2.1.12">
-<h3 data-number="2.1.12" class="anchored" data-anchor-id="download-swissalti3d-tiles-with-custom-extent"><span class="header-section-number">2.1.12</span> Download swissAlti3D tiles with custom extent</h3>
+<section id="download-swissalti3d-tiles-with-custom-extent" class="level2" data-number="2.14">
+<h2 data-number="2.14" class="anchored" data-anchor-id="download-swissalti3d-tiles-with-custom-extent"><span class="header-section-number">2.14</span> Download swissAlti3D tiles with custom extent</h2>
 <p>https://gist.github.com/ratnanil/83d4cd439300e18b7666e4efde59ddf2</p>
 </section>
-<section id="map-matching" class="level3" data-number="2.1.13">
-<h3 data-number="2.1.13" class="anchored" data-anchor-id="map-matching"><span class="header-section-number">2.1.13</span> Map Matching</h3>
+<section id="map-matching" class="level2" data-number="2.15">
+<h2 data-number="2.15" class="anchored" data-anchor-id="map-matching"><span class="header-section-number">2.15</span> Map Matching</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>HighWays <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"sqlite/test3.sqlite"</span>,<span class="at">package=</span><span class="st">"sf"</span>), <span class="st">"HighWays"</span>)[<span class="dv">6</span>, ] </span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="co"># since we want to find the closest location on the road over ALL roads</span></span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co"># we need to create a union of the roads first.</span></span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>HighWays <span class="ot">&lt;-</span> <span class="fu">st_union</span>(HighWays)</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's simulate 1000 GPS locations within 3km of the highway</span></span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>gps_locations <span class="ot">&lt;-</span> HighWays <span class="sc">|&gt;</span> <span class="fu">st_buffer</span>(<span class="dv">3000</span>) <span class="sc">|&gt;</span> <span class="fu">st_sample</span>(<span class="dv">100</span>)</span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we can get the nearset point for each GPS location</span></span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>nearest <span class="ot">&lt;-</span> <span class="fu">st_nearest_points</span>(gps_locations, HighWays)</span>
-<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a><span class="co"># The output is a line for each point (see plot below)</span></span>
-<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we need convert the output from LINE to POINT</span></span>
-<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>near_p <span class="ot">&lt;-</span> <span class="fu">st_cast</span>(nearest, <span class="st">"POINT"</span>)</span>
-<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a><span class="co"># now we subset the points. Uneven numbers are the original</span></span>
-<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a><span class="co"># points, even numbers are the new, mapmatched points.</span></span>
-<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>near_from <span class="ot">&lt;-</span> near_p[<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)]</span>
-<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>near_to <span class="ot">&lt;-</span> near_p[<span class="fu">c</span>(<span class="cn">FALSE</span>,<span class="cn">TRUE</span>)]</span>
-<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(HighWays) <span class="sc">+</span> <span class="fu">tm_lines</span>() <span class="sc">+</span></span>
-<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(nearest) <span class="sc">+</span> <span class="fu">tm_lines</span>(<span class="at">lty =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(near_from) <span class="sc">+</span> <span class="fu">tm_dots</span>() <span class="sc">+</span></span>
-<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(near_to) <span class="sc">+</span> <span class="fu">tm_dots</span>(<span class="at">col =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>HighWays <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="fu">system.file</span>(<span class="st">"sqlite/test3.sqlite"</span>,<span class="at">package=</span><span class="st">"sf"</span>), <span class="st">"HighWays"</span>)[<span class="dv">6</span>, ] </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># since we want to find the closest location on the road over ALL roads</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># we need to create a union of the roads first.</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>HighWays <span class="ot">&lt;-</span> <span class="fu">st_union</span>(HighWays)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's simulate 1000 GPS locations within 3km of the highway</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>gps_locations <span class="ot">&lt;-</span> HighWays <span class="sc">|&gt;</span> <span class="fu">st_buffer</span>(<span class="dv">3000</span>) <span class="sc">|&gt;</span> <span class="fu">st_sample</span>(<span class="dv">100</span>)</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we can get the nearset point for each GPS location</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>nearest <span class="ot">&lt;-</span> <span class="fu">st_nearest_points</span>(gps_locations, HighWays)</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co"># The output is a line for each point (see plot below)</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we need convert the output from LINE to POINT</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>near_p <span class="ot">&lt;-</span> <span class="fu">st_cast</span>(nearest, <span class="st">"POINT"</span>)</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="co"># now we subset the points. Uneven numbers are the original</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="co"># points, even numbers are the new, mapmatched points.</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>near_from <span class="ot">&lt;-</span> near_p[<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)]</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>near_to <span class="ot">&lt;-</span> near_p[<span class="fu">c</span>(<span class="cn">FALSE</span>,<span class="cn">TRUE</span>)]</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(HighWays) <span class="sc">+</span> <span class="fu">tm_lines</span>() <span class="sc">+</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(nearest) <span class="sc">+</span> <span class="fu">tm_lines</span>(<span class="at">lty =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(near_from) <span class="sc">+</span> <span class="fu">tm_dots</span>() <span class="sc">+</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>(near_to) <span class="sc">+</span> <span class="fu">tm_dots</span>(<span class="at">col =</span> <span class="st">"red"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -825,27 +821,27 @@ Projected CRS: WGS 84 / UTM zone 32N
 <figcaption>image</figcaption>
 </figure>
 </div>
-</section>
-<section id="data.frame-method-for-sf_layers-object" class="level3" data-number="2.1.14">
-<h3 data-number="2.1.14" class="anchored" data-anchor-id="data.frame-method-for-sf_layers-object"><span class="header-section-number">2.1.14</span> <code>data.frame</code> method for <code>sf_layers</code>-object</h3>
+<section id="data.frame-method-for-sf_layers-object" class="level3" data-number="2.15.1">
+<h3 data-number="2.15.1" class="anchored" data-anchor-id="data.frame-method-for-sf_layers-object"><span class="header-section-number">2.15.1</span> <code>data.frame</code> method for <code>sf_layers</code>-object</h3>
+<p><em>OUTDATED??</em></p>
 <p>The function <code>st_layers()</code> returns an <code>sf_layers</code> object, which is basically a list that <em>could</em> easily be coerced to a data.frame. This is not possible by default, I first have to create a new method for a generic from another package (from <a href="https://stackoverflow.com/a/24831503/4139249">here</a>).</p>
 <p>I created an issue for this: https://github.com/r-spatial/sf/issues/2412</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># OUTDATED??</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>as.data.frame.sf_layers <span class="ot">&lt;-</span> \(x) sf<span class="sc">:::</span><span class="fu">print.sf_layers</span>(x) <span class="sc">|&gt;</span> <span class="fu">data.frame</span>()</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>as_tibble.sf_layers <span class="ot">&lt;-</span> \(x) <span class="fu">as_tibble</span>(<span class="fu">as.data.frame</span>(x))      <span class="co"># optional, creates an as_tibble method</span></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co"># test this on an sqlite dataset:</span></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>layers <span class="ot">&lt;-</span> <span class="fu">st_layers</span>(<span class="fu">system.file</span>(<span class="st">"sqlite/test3.sqlite"</span>,<span class="at">package=</span><span class="st">"sf"</span>)) </span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(layers)</span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(layers)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>as.data.frame.sf_layers <span class="ot">&lt;-</span> \(x) sf<span class="sc">:::</span><span class="fu">print.sf_layers</span>(x) <span class="sc">|&gt;</span> <span class="fu">data.frame</span>()</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>as_tibble.sf_layers <span class="ot">&lt;-</span> \(x) <span class="fu">as_tibble</span>(<span class="fu">as.data.frame</span>(x))      <span class="co"># optional, creates an as_tibble method</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># test this on an sqlite dataset:</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>layers <span class="ot">&lt;-</span> <span class="fu">st_layers</span>(<span class="fu">system.file</span>(<span class="st">"sqlite/test3.sqlite"</span>,<span class="at">package=</span><span class="st">"sf"</span>)) </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(layers)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(layers)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
-<section id="terra" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="terra"><span class="header-section-number">2.2</span> terra</h2>
-<section id="datatypes" class="level3" data-number="2.2.1">
-<h3 data-number="2.2.1" class="anchored" data-anchor-id="datatypes"><span class="header-section-number">2.2.1</span> Datatypes</h3>
+<section id="terra" class="level2" data-number="2.16">
+<h2 data-number="2.16" class="anchored" data-anchor-id="terra"><span class="header-section-number">2.16</span> terra</h2>
+<section id="datatypes" class="level3" data-number="2.16.1">
+<h3 data-number="2.16.1" class="anchored" data-anchor-id="datatypes"><span class="header-section-number">2.16.1</span> Datatypes</h3>
 <p>From <a href="https://r.geocompx.org/read-write.html#raster-data-write">here</a></p>
 <table class="caption-top table">
 <thead>
@@ -894,8 +890,8 @@ Projected CRS: WGS 84 / UTM zone 32N
 </tbody>
 </table>
 </section>
-<section id="rasterize-a-vector-dataset" class="level3" data-number="2.2.2">
-<h3 data-number="2.2.2" class="anchored" data-anchor-id="rasterize-a-vector-dataset"><span class="header-section-number">2.2.2</span> Rasterize a vector dataset</h3>
+<section id="rasterize-a-vector-dataset" class="level3" data-number="2.16.2">
+<h3 data-number="2.16.2" class="anchored" data-anchor-id="rasterize-a-vector-dataset"><span class="header-section-number">2.16.2</span> Rasterize a vector dataset</h3>
 <pre><code>zg &lt;- st_read("https://api3.geo.admin.ch/rest/services/api/MapServer/ch.swisstopo.swissboundaries3d-kanton-flaeche.fill/9?geometryFormat=geojson&amp;sr=4326")
 
 zg &lt;- st_transform(zg, 2056)
@@ -964,13 +960,14 @@ plot(zg_ras)</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1319,8 +1316,8 @@ plot(zg_ras)</code></pre>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./ggplot.html" class="pagination-link" aria-label="Ggplot">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ggplot</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./geospatial.html" class="pagination-link" aria-label="Geospatial">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Geospatial</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

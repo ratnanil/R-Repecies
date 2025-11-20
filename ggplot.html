@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.19">
+<meta name="generator" content="quarto-1.9.11">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Ggplot – R-Tricks</title>
+<title>4&nbsp; Ggplot – R-Tricks</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -66,7 +66,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./rstudio.html" rel="next">
-<link href="./r-spatial.html" rel="prev">
+<link href="./geospatial.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -74,10 +74,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-46eeb4c476de49ef7df495821a6125d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-a5dfee7ccc7f20503a6465e15a2cff9c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d9c77dfe7a0221f9a51a4f8aebee4486.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-1b94657bcec7f050019a58791b04895b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -118,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ggplot.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ggplot</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ggplot.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ggplot</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -131,9 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="./index.html" class="sidebar-logo-link">
-      </a>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">R-Tricks</a> 
     </div>
@@ -165,14 +163,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./geospatial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Geospatial</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./ggplot.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ggplot</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ggplot</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./rstudio.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">RStudio</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">RStudio</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./swisstopo-api.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Swisstopo API</span></span></a>
   </div>
 </li>
     </ul>
@@ -185,13 +195,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#ggplot2" id="toc-ggplot2" class="nav-link active" data-scroll-target="#ggplot2"><span class="header-section-number">3.1</span> ggplot2</a>
+  <li><a href="#ggplot2" id="toc-ggplot2" class="nav-link active" data-scroll-target="#ggplot2"><span class="header-section-number">4.1</span> ggplot2</a>
   <ul class="collapse">
-  <li><a href="#limit-plot-to-bounding-box" id="toc-limit-plot-to-bounding-box" class="nav-link" data-scroll-target="#limit-plot-to-bounding-box"><span class="header-section-number">3.1.1</span> Limit plot to bounding box</a></li>
-  <li><a href="#add-number-of-observations-to-boxplot" id="toc-add-number-of-observations-to-boxplot" class="nav-link" data-scroll-target="#add-number-of-observations-to-boxplot"><span class="header-section-number">3.1.2</span> Add number of observations to boxplot</a></li>
-  <li><a href="#customize-labelling-in-facet_wrapfacet_grid" id="toc-customize-labelling-in-facet_wrapfacet_grid" class="nav-link" data-scroll-target="#customize-labelling-in-facet_wrapfacet_grid"><span class="header-section-number">3.1.3</span> Customize labelling in <code>facet_wrap</code>/<code>facet_grid</code></a></li>
-  <li><a href="#transparent-background" id="toc-transparent-background" class="nav-link" data-scroll-target="#transparent-background"><span class="header-section-number">3.1.4</span> Transparent background</a></li>
-  <li><a href="#annotating-outside-plot-area" id="toc-annotating-outside-plot-area" class="nav-link" data-scroll-target="#annotating-outside-plot-area"><span class="header-section-number">3.1.5</span> Annotating outside plot area:</a></li>
+  <li><a href="#limit-plot-to-bounding-box" id="toc-limit-plot-to-bounding-box" class="nav-link" data-scroll-target="#limit-plot-to-bounding-box"><span class="header-section-number">4.1.1</span> Limit plot to bounding box</a></li>
+  <li><a href="#add-number-of-observations-to-boxplot" id="toc-add-number-of-observations-to-boxplot" class="nav-link" data-scroll-target="#add-number-of-observations-to-boxplot"><span class="header-section-number">4.1.2</span> Add number of observations to boxplot</a></li>
+  <li><a href="#customize-labelling-in-facet_wrapfacet_grid" id="toc-customize-labelling-in-facet_wrapfacet_grid" class="nav-link" data-scroll-target="#customize-labelling-in-facet_wrapfacet_grid"><span class="header-section-number">4.1.3</span> Customize labelling in <code>facet_wrap</code>/<code>facet_grid</code></a></li>
+  <li><a href="#transparent-background" id="toc-transparent-background" class="nav-link" data-scroll-target="#transparent-background"><span class="header-section-number">4.1.4</span> Transparent background</a></li>
+  <li><a href="#annotating-outside-plot-area" id="toc-annotating-outside-plot-area" class="nav-link" data-scroll-target="#annotating-outside-plot-area"><span class="header-section-number">4.1.5</span> Annotating outside plot area:</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -201,7 +211,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Ggplot</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ggplot</span></h1>
 </div>
 
 
@@ -218,10 +228,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="ggplot2" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="ggplot2"><span class="header-section-number">3.1</span> ggplot2</h2>
-<section id="limit-plot-to-bounding-box" class="level3" data-number="3.1.1">
-<h3 data-number="3.1.1" class="anchored" data-anchor-id="limit-plot-to-bounding-box"><span class="header-section-number">3.1.1</span> Limit plot to bounding box</h3>
+<section id="ggplot2" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="ggplot2"><span class="header-section-number">4.1</span> ggplot2</h2>
+<section id="limit-plot-to-bounding-box" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="limit-plot-to-bounding-box"><span class="header-section-number">4.1.1</span> Limit plot to bounding box</h3>
 <p><code>coord_sf()</code> in <code>ggplot2</code> does not seem to accept a geometry to limit the axes. You have to do it manually, like so:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -233,8 +243,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_sf</span>() <span class="sc">+</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a> <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(bb[<span class="st">"xmin"</span>], bb[<span class="st">"xmax"</span>]),<span class="at">ylim =</span> <span class="fu">c</span>(bb[<span class="st">"ymin"</span>], bb[<span class="st">"ymax"</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="add-number-of-observations-to-boxplot" class="level3" data-number="3.1.2">
-<h3 data-number="3.1.2" class="anchored" data-anchor-id="add-number-of-observations-to-boxplot"><span class="header-section-number">3.1.2</span> Add number of observations to boxplot</h3>
+<section id="add-number-of-observations-to-boxplot" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="add-number-of-observations-to-boxplot"><span class="header-section-number">4.1.2</span> Add number of observations to boxplot</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="fu">as.character</span>(cyl), disp)) <span class="sc">+</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">geom =</span> <span class="st">"label"</span>, <span class="at">fun.data =</span> \(x)<span class="fu">c</span>(<span class="at">y =</span> <span class="fu">median</span>(x), <span class="at">label =</span> <span class="fu">length</span>(x)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -245,22 +255,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </section>
-<section id="customize-labelling-in-facet_wrapfacet_grid" class="level3" data-number="3.1.3">
-<h3 data-number="3.1.3" class="anchored" data-anchor-id="customize-labelling-in-facet_wrapfacet_grid"><span class="header-section-number">3.1.3</span> Customize labelling in <code>facet_wrap</code>/<code>facet_grid</code></h3>
+<section id="customize-labelling-in-facet_wrapfacet_grid" class="level3" data-number="4.1.3">
+<h3 data-number="4.1.3" class="anchored" data-anchor-id="customize-labelling-in-facet_wrapfacet_grid"><span class="header-section-number">4.1.3</span> Customize labelling in <code>facet_wrap</code>/<code>facet_grid</code></h3>
 <p>To customize the labelling on the “strips” in <code>facet_wrap</code>/<code>facet_grid</code>, proceed as follows. Note how the name of the column (<code>mycol</code>) is an argument of the <code>labeller()</code> function, while the input to that argument is a (anonymus) function which takes a string as an input and returns a string. The returned string is used as the label.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">facet_wrap</span>(<span class="sc">~</span>mycol, <span class="at">labeller =</span> <span class="fu">labeller</span>(<span class="at">mycol =</span> \(x) <span class="fu">paste</span>(<span class="st">"Gruppe"</span>,x)),<span class="at">nrow =</span> nrows)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="transparent-background" class="level3" data-number="3.1.4">
-<h3 data-number="3.1.4" class="anchored" data-anchor-id="transparent-background"><span class="header-section-number">3.1.4</span> Transparent background</h3>
+<section id="transparent-background" class="level3" data-number="4.1.4">
+<h3 data-number="4.1.4" class="anchored" data-anchor-id="transparent-background"><span class="header-section-number">4.1.4</span> Transparent background</h3>
 <p>Add the following theme element to the plot (<a href="https://www.statology.org/ggplot-transparent-background/">source</a>):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">theme</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"transparent"</span>),</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill=</span><span class="st">"transparent"</span>, <span class="at">color=</span><span class="cn">NA</span>)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="annotating-outside-plot-area" class="level3" data-number="3.1.5">
-<h3 data-number="3.1.5" class="anchored" data-anchor-id="annotating-outside-plot-area"><span class="header-section-number">3.1.5</span> Annotating outside plot area:</h3>
+<section id="annotating-outside-plot-area" class="level3" data-number="4.1.5">
+<h3 data-number="4.1.5" class="anchored" data-anchor-id="annotating-outside-plot-area"><span class="header-section-number">4.1.5</span> Annotating outside plot area:</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowplot)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -334,13 +344,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -684,13 +695,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./r-spatial.html" class="pagination-link" aria-label="R Spatial">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R Spatial</span></span>
+      <a href="./geospatial.html" class="pagination-link" aria-label="Geospatial">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Geospatial</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./rstudio.html" class="pagination-link" aria-label="RStudio">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">RStudio</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">RStudio</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

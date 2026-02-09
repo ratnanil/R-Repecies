@@ -1,5 +1,10 @@
 # Geospatial
 
+Deep dive on pruning: [Lazy GeoParquet reading in SedonaDB, DuckDB, GeoPandas, and GDAL](https://dewey.dunnington.ca/post/2025/lazy-geoparquet-reading-in-sedonadb-duckdb-geopandas-and-gdal/) 
+
+
+
+
 
 ```{r}
 library(sf)

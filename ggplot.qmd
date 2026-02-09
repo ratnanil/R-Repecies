@@ -54,7 +54,7 @@ theme(
 
 ### Annotating outside plot area:
 
-```r
+```{r}
 library(ggplot2)
 library(cowplot)
 
@@ -69,3 +69,39 @@ ggdraw() +
 ```
 
 ![image](https://github.com/ratnanil/IT_diary/assets/12532091/fa90d9b2-35a6-4d71-b403-7dfd8942dfd1)
+
+
+
+### RColorbrewer for continuous classes
+
+
+
+```{r}
+
+library(ggplot2)
+
+ggplot(mtcars, aes(mpg,disp, color = mpg)) +
+  geom_point() +
+  scale_color_continuous(palette = "Spectral")
+
+```
+
+
+### Reverse legend
+
+```{r}
+#| layout-nrow: 1
+#| column: page
+#| fig-subcap: 
+#|   - Default direction (high to low)
+#|   - Reversed direction (low to high)
+library(ggplot2)
+
+p <- ggplot(mtcars, aes(mpg,disp, color = mpg)) +
+  geom_point()
+
+p
+
+p +
+  guides(colour = guide_colorbar(reverse=TRUE))
+```

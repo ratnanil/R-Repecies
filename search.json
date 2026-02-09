@@ -254,7 +254,7 @@
     "href": "geospatial.html",
     "title": "3  Geospatial",
     "section": "",
-    "text": "3.1 Geodata",
+    "text": "3.1 Geodata\nDeep dive on pruning: Lazy GeoParquet reading in SedonaDB, DuckDB, GeoPandas, and GDAL",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Geospatial</span>"
     ]
@@ -304,7 +304,7 @@
     "href": "ggplot.html#ggplot2",
     "title": "4  Ggplot",
     "section": "",
-    "text": "4.1.1 Limit plot to bounding box\ncoord_sf() in ggplot2 does not seem to accept a geometry to limit the axes. You have to do it manually, like so:\nlibrary(rnaturalearth)\n\nsouthamerica &lt;- ne_countries(returnclass=\"sf\", continent = \"South America\")\n\nbb &lt;- st_bbox(southamerica[southamerica$admin == \"Brazil\",])\n\nggplot(southamerica) +\n geom_sf() +\n coord_sf(xlim = c(bb[\"xmin\"], bb[\"xmax\"]),ylim = c(bb[\"ymin\"], bb[\"ymax\"]))\n\n\n4.1.2 Add number of observations to boxplot\nggplot(mtcars, aes(as.character(cyl), disp)) +\n  geom_boxplot() +\n  stat_summary(geom = \"label\", fun.data = \\(x)c(y = median(x), label = length(x)))\n\n\n\nimage\n\n\n\n\n4.1.3 Customize labelling in facet_wrap/facet_grid\nTo customize the labelling on the “strips” in facet_wrap/facet_grid, proceed as follows. Note how the name of the column (mycol) is an argument of the labeller() function, while the input to that argument is a (anonymus) function which takes a string as an input and returns a string. The returned string is used as the label.\nfacet_wrap(~mycol, labeller = labeller(mycol = \\(x) paste(\"Gruppe\",x)),nrow = nrows)\n\n\n\n4.1.4 Transparent background\nAdd the following theme element to the plot (source):\ntheme(\n  panel.background = element_rect(fill=\"transparent\"),\n  plot.background = element_rect(fill=\"transparent\", color=NA)\n  )\n\n\n4.1.5 Annotating outside plot area:\nlibrary(ggplot2)\nlibrary(cowplot)\n\np &lt;- ggplot(mtcars, aes(disp, mpg)) + geom_point() +\n  facet_wrap(~cyl)\n\nggdraw() +\n  draw_plot(p,.5, .5, .75, .75,hjust = .5, vjust = .5) +\n  draw_line(x = c(.1, .5), y = c(.9, .5), arrow = grid::arrow(type = \"closed\")) +\n  draw_label(\"What a special subset\",x = 0.05, y = .95,hjust = 0)\n\n\n\nimage",
+    "text": "4.1.1 Limit plot to bounding box\ncoord_sf() in ggplot2 does not seem to accept a geometry to limit the axes. You have to do it manually, like so:\nlibrary(rnaturalearth)\n\nsouthamerica &lt;- ne_countries(returnclass=\"sf\", continent = \"South America\")\n\nbb &lt;- st_bbox(southamerica[southamerica$admin == \"Brazil\",])\n\nggplot(southamerica) +\n geom_sf() +\n coord_sf(xlim = c(bb[\"xmin\"], bb[\"xmax\"]),ylim = c(bb[\"ymin\"], bb[\"ymax\"]))\n\n\n4.1.2 Add number of observations to boxplot\nggplot(mtcars, aes(as.character(cyl), disp)) +\n  geom_boxplot() +\n  stat_summary(geom = \"label\", fun.data = \\(x)c(y = median(x), label = length(x)))\n\n\n\nimage\n\n\n\n\n4.1.3 Customize labelling in facet_wrap/facet_grid\nTo customize the labelling on the “strips” in facet_wrap/facet_grid, proceed as follows. Note how the name of the column (mycol) is an argument of the labeller() function, while the input to that argument is a (anonymus) function which takes a string as an input and returns a string. The returned string is used as the label.\nfacet_wrap(~mycol, labeller = labeller(mycol = \\(x) paste(\"Gruppe\",x)),nrow = nrows)\n\n\n\n4.1.4 Transparent background\nAdd the following theme element to the plot (source):\ntheme(\n  panel.background = element_rect(fill=\"transparent\"),\n  plot.background = element_rect(fill=\"transparent\", color=NA)\n  )\n\n\n4.1.5 Annotating outside plot area:\n\nlibrary(ggplot2)\nlibrary(cowplot)\n\np &lt;- ggplot(mtcars, aes(disp, mpg)) + geom_point() +\n  facet_wrap(~cyl)\n\nggdraw() +\n  draw_plot(p,.5, .5, .75, .75,hjust = .5, vjust = .5) +\n  draw_line(x = c(.1, .5), y = c(.9, .5), arrow = grid::arrow(type = \"closed\")) +\n  draw_label(\"What a special subset\",x = 0.05, y = .95,hjust = 0)\n\n\n\n\n\n\n\n\n\n\n\nimage\n\n\n\n\n4.1.6 RColorbrewer for continuous classes\n\nlibrary(ggplot2)\n\nggplot(mtcars, aes(mpg,disp, color = mpg)) +\n  geom_point() +\n  scale_color_continuous(palette = \"Spectral\")\n\n\n\n\n\n\n\n\n\n\n4.1.7 Reverse legend\nlibrary(ggplot2)\n\np &lt;- ggplot(mtcars, aes(mpg,disp, color = mpg)) +\n  geom_point()\n\np\n\np +\n  guides(colour = guide_colorbar(reverse=TRUE))\n\n\n\n\n\n\nDefault direction (high to low)\n\n\n\n\n\n\n\nReversed direction (low to high)",
     "crumbs": [
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Ggplot</span>"
     ]
@@ -314,17 +314,7 @@
     "href": "rstudio.html",
     "title": "5  RStudio",
     "section": "",
-    "text": "5.1 RStudio from bash\nI created a program that writes a Rstudio-Project file. Its unclear what of the process I should document where. Some are Linux / Ubuntu tips, points are installation diary items. I did this in a why that I want to (vibe-) code more tools later on.\nThe program is installed here:\nNow, I added this to zsh.rc\nNow I can run:\nThe program is tracked here: https://github.com/ratnanil/rproj-create",
-    "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>RStudio</span>"
-    ]
-  },
-  {
-    "objectID": "rstudio.html#rstudio-from-bash",
-    "href": "rstudio.html#rstudio-from-bash",
-    "title": "5  RStudio",
-    "section": "",
-    "text": "mkdir -p ~/bin/rproj_create\nnvim ~/bin/rproj_create/rproj_create # ← write program\n\nchmod +x ~/bin/rproj_create/rproj_create\n\n# Add rproj_create to path\nexport PATH=\"$HOME/bin/rproj_create:$PATH\"\n\n\n\n\n\n\n\n\nCommand\nResult\n\n\n\n\ncreate_rproj_file\ncreates project.Rproj\n\n\ncreate_rproj_file \"Zürich Projekt\"\ncreates Zürich_Projekt.Rproj\n\n\ncreate_rproj_file \"Zürich Projekt\" zurich.Rproj\ncreates zurich.Rproj\n\n\ncreate_rproj_file MyProject --NumSpacesForTab 4\ncreates MyProject.Rproj",
+    "text": "moved to obsidian it-diary",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>RStudio</span>"
     ]

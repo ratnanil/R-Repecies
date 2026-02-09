@@ -20,41 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -190,14 +155,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#rstudio-from-bash" id="toc-rstudio-from-bash" class="nav-link active" data-scroll-target="#rstudio-from-bash"><span class="header-section-number">5.1</span> RStudio from bash</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -221,52 +180,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="rstudio-from-bash" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="rstudio-from-bash"><span class="header-section-number">5.1</span> RStudio from bash</h2>
-<p>I created a program that writes a Rstudio-Project file. Its unclear what of the process I should document where. Some are Linux / Ubuntu tips, points are installation diary items. I did this in a why that I want to (vibe-) code more tools later on.</p>
-<p>The program is installed here:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/bin/rproj_create</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nvim</span> ~/bin/rproj_create/rproj_create <span class="co"># ← write program</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x ~/bin/rproj_create/rproj_create</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Now, I added this to <code>zsh.rc</code></p>
-<pre><code># Add rproj_create to path
-export PATH="$HOME/bin/rproj_create:$PATH"</code></pre>
-<p>Now I can run:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 62%">
-<col style="width: 37%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Command</th>
-<th>Result</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>create_rproj_file</code></td>
-<td>creates <code>project.Rproj</code></td>
-</tr>
-<tr class="even">
-<td><code>create_rproj_file "Zürich Projekt"</code></td>
-<td>creates <code>Zürich_Projekt.Rproj</code></td>
-</tr>
-<tr class="odd">
-<td><code>create_rproj_file "Zürich Projekt" zurich.Rproj</code></td>
-<td>creates <code>zurich.Rproj</code></td>
-</tr>
-<tr class="even">
-<td><code>create_rproj_file MyProject --NumSpacesForTab 4</code></td>
-<td>creates <code>MyProject.Rproj</code></td>
-</tr>
-</tbody>
-</table>
-<p>The program is tracked here: https://github.com/ratnanil/rproj-create</p>
+<p>moved to obsidian <code>it-diary</code></p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
